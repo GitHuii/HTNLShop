@@ -28,7 +28,7 @@ namespace HTNLShop.Areas.Admin.Controllers
                 TotalProducts = await _context.Products.CountAsync(),
                 TotalOrders = await _context.Orders.CountAsync(),
                 TotalRevenue = await _context.Orders
-                    .Where(o => o.Status == "Completed" || o.Status == "Đã giao")
+                    .Where(o => o.Status == "Completed" || o.Status.ToLower().Contains("Đã giao hàng"))
                     .SumAsync(o => o.TotalPrice ?? 0),
 
                 // Đơn hàng chờ xử lý

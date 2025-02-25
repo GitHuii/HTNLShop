@@ -13,15 +13,30 @@ namespace HTNLShop.Controllers
         {
             db = context;
         }
-        public IActionResult Index(int? id , int? page)
+        public IActionResult Index(int? id , int? page, string sortOrder)
         {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.CurrentCategory = id;
             int pageSize = 9;
             int pageNumber = page == null || page < 1 ? 1 : page.Value;
-
             var sanphams = db.Products.AsQueryable();
             if (id != null)
             {
                 sanphams = sanphams.Where(p => p.CategoryId == id);
+            }
+
+            switch (sortOrder)
+            {
+                case "asc":
+                    sanphams = sanphams.OrderBy(p => p.Price);
+                    break;
+                case "desc":
+                    sanphams = sanphams.OrderByDescending(p => p.Price);
+                    break;
+                default:
+                    // Mặc định: có thể sắp xếp theo ProductId hoặc tên
+                    sanphams = sanphams.OrderBy(p => p.ProductId);
+                    break;
             }
 
             var list = sanphams.Select(p => new ViewModels.ProductVM
@@ -34,7 +49,6 @@ namespace HTNLShop.Controllers
                 CategoryId = p.CategoryId,
                 CategoryName = p.Category.CategoryName
             }).ToPagedList(pageNumber, pageSize);
-
             return View(list);
         }
 

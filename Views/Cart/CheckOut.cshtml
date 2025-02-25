@@ -6,7 +6,7 @@
 
     <div class="container-fluid py-5">
         <div class="container py-5">
-            <h1 class="mb-4">Billing details</h1>
+            <h1 class="mb-4">Thông Tin Hóa Đơn</h1>
             @* <form action="#"> *@
 
             <form asp-action="CheckOut" asp-controller="Cart">
@@ -37,10 +37,7 @@
                         </div>
 
                         <hr>
-                        <div class="form-check my-3">
-                            <input class="form-check-input" type="checkbox" id="Address-1" name="Address" value="Address">
-                            <label class="form-check-label" for="Address-1">Ship to a different address?</label>
-                        </div>
+                    
                         <div class="form-item mt-2">
                             <textarea name="Notes" class="form-control" spellcheck="false" cols="30" rows="11" placeholder="Ghi chú"></textarea>
                         </div>
@@ -50,11 +47,11 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Products</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Total</th>
+                                    <th scope="col">Sản Phẩm</th>
+                                    <th scope="col">Tên Sản Phẩm</th>
+                                    <th scope="col">Giá Tiền</th>
+                                    <th scope="col">Số Lượng</th>
+                                    <th scope="col">Tổng Tiền</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -67,38 +64,13 @@
                                                 </div>
                                             </th>
                                             <td class="py-5">@item.ProductName</td>
-                                            <td class="py-5">@item.Price</td>
+                                        <td class="py-5">@string.Format("{0:N0}", @item.Price)đ</td>
                                             <td class="py-5">@item.Quantity</td>
-                                            <td class="py-5">@item.Pay</td>
+                                        <td class="py-5">@string.Format("{0:N0}", @item.Pay)đ</td>
                                         </tr>
                                     }
-                                        <th scope="row">
-                                        </th>
-                                        <td class="py-5"></td>
-                                        <td class="py-5"></td>
-                                        <td class="py-5">
-                                            <p class="mb-0 text-dark py-3">Tổng cộng</p>
-                                        </td>
-                                        <td class="py-5">
-                                            <div class="py-3 border-bottom border-top">
-                                        <p class="mb-0 text-dark">@Model.Sum(pr => pr.Pay)</p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                        </th>
-                                        <td class="py-5">
-                                            <p class="mb-0 text-dark py-4">Shipping</p>
-                                        </td>
-                                        <td colspan="3" class="py-5">
-                                            <div class="form-check text-start">
-                                                <input type="checkbox" class="form-check-input bg-primary border-0" id="Shipping-1" name="Shipping-1" value="Shipping" checked>
-                                                <label class="form-check-label" for="Shipping-1">Free Shipping</label>
-                                            </div>
-                                       
-                                        </td>
-                                    </tr>
+                                        
+                                
                                     <tr>
                                         <th scope="row">
                                         </th>
@@ -109,7 +81,7 @@
                                         <td class="py-5"></td>
                                         <td class="py-5">
                                             <div class="py-3 border-bottom border-top">
-                                            <p class="mb-0 text-dark">@Model.Sum(pr => pr.Pay)</p>
+                                            <p class="mb-0 text-dark">@string.Format("{0:N0}", @Model.Sum(pr => pr.Pay))đ</p>
                                             </div>
                                         </td>
                                     </tr>

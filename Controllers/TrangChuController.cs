@@ -88,14 +88,17 @@ namespace HTNLShop.Controllers
                     CategoryId = p.CategoryId,
                     CategoryName = p.Category.CategoryName
                 }).ToList();
-
+            //Lấy số lượng sản phẩm đang có sẵn
+            var  Total = _context.Products.Count();
+            var TotalRate = _context.Reviews.Count(x => x.Rate >= 4);
             // Gộp vào ViewModel
             var model = new TrangChuVM
             {
                 Categories = categories,
                 Monitors = monitors
             };
-
+            ViewBag.TotalProducts = Total;
+            ViewBag.TotalHighRatings = TotalRate;
             return View(model);
         }
     }

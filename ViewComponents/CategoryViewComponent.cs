@@ -14,6 +14,7 @@ namespace HTNLShop.ViewComponents
 
         public IViewComponentResult Invoke()
         {
+            ViewBag.CurrentSort = ViewContext.ViewBag.CurrentSort;
             var data = _context.Categories
                 .Select(c => new CategoryVM
                 {

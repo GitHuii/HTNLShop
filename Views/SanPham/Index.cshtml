@@ -8,10 +8,10 @@
 
 @section BreadCum {
     <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">SẢN PHẨM</h1>
+        <h1 class="text-center text-white display-6" style="font-family:'roboto' ,'sans-serif'">Sản Phẩm</h1>
         <ol class="breadcrumb justify-content-center mb-0">
-            <li class="breadcrumb-item"><a href="#">TRANG CHỦ</a></li>
-            <li class="breadcrumb-item active text-white">SẢN PHẨM</li>
+            <li class="breadcrumb-item"><a href="#">Trang Chủ</a></li>
+            <li class="breadcrumb-item active text-white">Sản Phẩm</li>
         </ol>
     </div>
 }
@@ -21,7 +21,11 @@
 <div class="d-flex justify-content-center mt-5">
     @Html.PagedListPager(
     Model,
-    page => Url.Action("Index", "SanPham", new { page }),
+    page => Url.Action("Index", "SanPham", new { 
+                page = page,
+                id = ViewBag.CurrentCategory,
+                sortOrder = ViewBag.CurrentSort
+    }),
         new PagedListRenderOptions
         {
             DisplayLinkToFirstPage = PagedListDisplayMode.Always,
