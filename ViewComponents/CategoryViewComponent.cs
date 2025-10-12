@@ -1,22 +1,27 @@
-﻿using HTNLShop.ViewModels;
+﻿using HTNLShop.Data;
+using HTNLShop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HTNLShop.ViewComponents
 {
     public class CategoryViewComponent : ViewComponent
     {
-        public CategoryViewComponent()
+        private readonly HtlnshopContext _context;
+        public CategoryViewComponent(HtlnshopContext context)
         {
+            _context = context;
         }
 
         public IViewComponentResult Invoke()
         {
-            var data = new List<CategoryVM>
-            {
-                new CategoryVM { CategoryId = 1, CategoryName = "CPU" ,ProductCount = 11},
-                new CategoryVM { CategoryId = 2, CategoryName = "Ram" ,ProductCount = 12},
-                new CategoryVM { CategoryId = 3, CategoryName = "VGA" ,ProductCount = 13}
-            };
+            var data = _context.Categories
+                .Select(c => new CategoryVM
+                {
+                    CategoryId = c.CategoryId,
+                    CategoryName = c.CategoryName,
+                    ProductCount = _context.Products.Count(p => p.CategoryId == c.CategoryId)
+                })
+                .ToList();
             return View(data);
         }
     }
