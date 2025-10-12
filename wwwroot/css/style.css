@@ -83,7 +83,7 @@
 
 .topbar {
     padding: 20px;
-    border-radius: 230px 100px;
+    border-radius: 36px;
 }
 
 .topbar .top-info {
@@ -219,7 +219,7 @@
 
 .page-header {
     position: relative;
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../img/cart-page-header-img.jpg);
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../Assets/img/banner/b.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
