@@ -8,6 +8,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<HtlnshopContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("HTLNShop"));
     });
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -18,6 +24,7 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthorization();
 
