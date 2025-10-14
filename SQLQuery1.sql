@@ -75,3 +75,5 @@ CREATE TABLE OrderItems (
     FOREIGN KEY (ProductId) REFERENCES Products(ProductId)
 );
 GO
+
+SELECT * FROM Categories;
