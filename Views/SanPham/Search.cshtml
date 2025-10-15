@@ -1,0 +1,11 @@
+﻿@model IEnumerable<HTNLShop.ViewModels.ProductVM>
+@{
+    ViewData["Title"] = "Search";
+    Layout = "_ListProduct";
+}
+
+<h1>Tìm Kiếm</h1>
+<h4>Có @Model.Count() sản phẩm</h4>
+
+@await Html.PartialAsync("ProductItem", Model)
+

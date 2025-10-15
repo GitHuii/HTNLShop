@@ -7,6 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Assets\img\1\1.png" />
+    <Content Remove="wwwroot\Assets\img\1\2.jpg" />
+    <Content Remove="wwwroot\Assets\img\1\3.png" />
+    <Content Remove="wwwroot\Assets\img\1\4.png" />
+    <Content Remove="wwwroot\Assets\img\2\1.jpg" />
+    <Content Remove="wwwroot\Assets\img\2\2.png" />
+    <Content Remove="wwwroot\Assets\img\2\3.png" />
+    <Content Remove="wwwroot\Assets\img\2\4.png" />
+    <Content Remove="wwwroot\Assets\img\3\1.jpg" />
+    <Content Remove="wwwroot\Assets\img\3\2.jpg" />
+    <Content Remove="wwwroot\Assets\img\3\3.jpg" />
+    <Content Remove="wwwroot\Assets\img\3\4.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.9">
@@ -18,6 +33,21 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Assets\img\1\1.png" />
+    <None Include="wwwroot\Assets\img\1\2.jpg" />
+    <None Include="wwwroot\Assets\img\1\3.png" />
+    <None Include="wwwroot\Assets\img\1\4.png" />
+    <None Include="wwwroot\Assets\img\2\1.jpg" />
+    <None Include="wwwroot\Assets\img\2\2.png" />
+    <None Include="wwwroot\Assets\img\2\3.png" />
+    <None Include="wwwroot\Assets\img\2\4.png" />
+    <None Include="wwwroot\Assets\img\3\1.jpg" />
+    <None Include="wwwroot\Assets\img\3\2.jpg" />
+    <None Include="wwwroot\Assets\img\3\3.jpg" />
+    <None Include="wwwroot\Assets\img\3\4.jpg" />
   </ItemGroup>
 
 </Project>

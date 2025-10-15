@@ -40,6 +40,7 @@
                         </div> *@
                         <p class="mb-4">@Model.ProductDetail</p>
                         @* <p class="mb-4">Susp endisse ultricies nisi vel quam suscipit. Sabertooth peacock flounder; chain pickerel hatchetfish, pencilfish snailfish</p> *@
+
                         <form asp-action="AddToCart" asp-controller="Cart" asp-route-id="@Model.ProductId">
                         <div class="input-group quantity mb-5" style="width: 100px;">
                             <div class="input-group-btn">
@@ -54,10 +55,9 @@
                                 </button>
                             </div>
                         </div>
-                        
                             <button class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i>Thêm Vào Giỏ Hàng</button>
                         </form>
-                        
+
                     </div>
                     @* <div class="col-lg-12">
                         <nav>
