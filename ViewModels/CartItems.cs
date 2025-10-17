@@ -13,5 +13,6 @@ namespace HTNLShop.ViewModels
         public string Image { get; set; }
         public double Price { get; set; }
         public double Pay => Quantity * Price;
+         
     }
 }

@@ -1,0 +1,65 @@
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
+@model IPagedList<HTNLShop.Data.Product>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "QuanLySanPham";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Quản Lý Sản Phẩm</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table text-start align-middle table-bordered table-hover mb-0" style="table-layout: fixed; width: 100%;">
+        <thead>
+            <tr class="text-dark">
+                <th style="width: 18%;">Tên Sản Phẩm</th>
+                <th style="width: 10%;">Giá</th>
+                <th style="width: 25%;">Mô Tả</th>
+                <th style="width: 10%;">Số Lượng</th>
+                <th style="width: 10%;">Ảnh</th>
+                <th style="width: 12%;">Danh Mục</th>
+                <th style="width: 15%;">Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Price.ToString("N0") ₫</td>
+                    <td>@item.ProductDetail</td>
+                    <td>@item.StockQuantity</td>
+                    <td><img src="~/images/@item.ImageUrl" alt="" width="60" /></td>
+                    <td>@item.Category?.CategoryName</td>
+                    <td style="white-space: nowrap;">
+                        <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div class="d-flex justify-content-center mt-3">
+    @Html.PagedListPager(
+    Model,
+    page => Url.Action("QuanLySanPham","HomeAdmin", new { page }),
+        new PagedListRenderOptions
+        {
+            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+            DisplayLinkToLastPage = PagedListDisplayMode.Always,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" }
+        })
+</div>
