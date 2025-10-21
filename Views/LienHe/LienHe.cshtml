@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Liên Hệ Với Chúng Tôi";
+}
+
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary">Chúng Tôi Sẵn Sàng Trợ Giúp</h1>
+        <p class="lead text-muted">Kết nối với đội ngũ hỗ trợ kỹ thuật và bán hàng của HTNL.Shop.</p>
+    </div>
+
+    <div class="row g-5">
+        <div class="col-lg-5">
+            <div class="p-4 rounded-3 shadow-sm bg-light mb-4">
+                <h3 class="h5 mb-4 border-bottom pb-2 text-secondary">Chi Tiết Liên Hệ Chính</h3>
+                <ul class="list-unstyled contact-info">
+                    <li class="mb-3 d-flex align-items-start">
+                        <i class="fas fa-map-marker-alt fa-2x text-primary me-3 mt-1"></i>
+                        <div>
+                            <strong class="text-dark">Trụ Sở Chính</strong>
+                            <p class="mb-0">218 Linh Nam, Hoàng Mai, Hà Nội</p>
+                        </div>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i class="fas fa-phone-alt fa-2x text-primary me-3 mt-1"></i>
+                        <div>
+                            <strong class="text-dark">Hotline Hỗ Trợ</strong>
+                            <p class="mb-0">+0888 6666 9999 (Hỗ trợ Kỹ thuật & Bán hàng)</p>
+                        </div>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i class="fas fa-envelope fa-2x text-primary me-3 mt-1"></i>
+                        <div>
+                            <strong class="text-dark">Email Giao Dịch</strong>
+                            <p class="mb-0">htnlshop@gmail.com</p>
+                        </div>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i class="fas fa-clock fa-2x text-primary me-3 mt-1"></i>
+                        <div>
+                            <strong class="text-dark">Thời Gian Làm Việc</strong>
+                            <p class="mb-0">Thứ Hai – Thứ Bảy: 8:00 – 18:00</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="card p-5 shadow-lg border-0 bg-white">
+                <h3 class="h4 mb-4 text-primary">Gửi Yêu Cầu Đến Đội Ngũ Của Chúng Tôi</h3>
+                <form>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="contactName" class="form-label">Họ và Tên (*)</label>
+                            <input type="text" class="form-control" id="contactName" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="contactEmail" class="form-label">Địa Chỉ Email (*)</label>
+                            <input type="email" class="form-control" id="contactEmail" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="contactSubject" class="form-label">Chủ Đề Yêu Cầu</label>
+                            <select class="form-select" id="contactSubject">
+                                <option selected>Chọn loại yêu cầu...</option>
+                                <option value="1">Hỗ trợ Kỹ thuật</option>
+                                <option value="2">Thông tin Đặt hàng/Giao hàng</option>
+                                <option value="3">Yêu cầu Hợp tác</option>
+                                <option value="4">Khác</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="contactMessage" class="form-label">Nội dung tin nhắn (*)</label>
+                            <textarea class="form-control" id="contactMessage" rows="7" required></textarea>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">Gửi Tin Nhắn</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
