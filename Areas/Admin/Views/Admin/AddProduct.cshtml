@@ -1,0 +1,94 @@
+﻿@model HTNLShop.Data.Product
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "AddProduct";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>AddProduct</h1>
+<h4>Product</h4>
+<hr />
+
+<div class="row">
+    <!-- Form bên trái -->
+    <div class="col-sm-12 col-xl-6">
+        <div class="bg-light rounded h-100 p-4">
+            <h6 class="mb-4">Thêm sản phẩm mới</h6>
+
+            <form method="post" asp-action="AddProduct" enctype="multipart/form-data">
+                <div class="form-floating mb-3">
+                    <input asp-for="ProductName" class="form-control" placeholder="Tên sản phẩm" />
+                    <label asp-for="ProductName">Tên Sản Phẩm</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Price" class="form-control" placeholder="Giá" />
+                    <label asp-for="Price">Giá</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <textarea asp-for="ProductDetail" class="form-control" style="height: 100px" placeholder="Mô tả"></textarea>
+                    <label asp-for="ProductDetail">Thông Tin Chi Tiết</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="StockQuantity" class="form-control" placeholder="Số lượng tồn" />
+                    <label asp-for="StockQuantity">Số Lượng</label>
+                </div>
+
+                <!-- Upload ảnh -->
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Ảnh sản phẩm</label>
+                    <input asp-for="ImageUrl" class="form-control" type="file" id="formFile" accept="image/*" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId">
+                    </select>
+                    <label asp-for="CategoryId">Danh Mục</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Preview ảnh bên phải -->
+    <div class="col-sm-12 col-xl-6 d-flex justify-content-center align-items-start">
+        <div class="bg-light rounded h-100 p-4 text-center w-100">
+            <h6 class="mb-4">Xem trước ảnh</h6>
+            <div style="display: flex; align-items: center; justify-content: center;
+                    height: 90%; background-color: #f8f9fa; border: 2px dashed #ccc;
+                    border-radius: 10px; overflow: hidden;">
+                <img id="previewImage" src="#" alt="Chưa có ảnh được chọn"
+                     style="max-width: 100%; max-height: 350px; object-fit: contain; border: 1px solid #ddd; border-radius: 8px; display: none;" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Lấy input file và thẻ img
+        const fileInput = document.getElementById('formFile');
+        const previewImg = document.getElementById('previewImage');
+
+        // Khi chọn file
+        fileInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Tạo URL tạm cho file
+                const reader = new FileReader();
+                reader.onload = function (ev) {
+                    previewImg.src = ev.target.result;
+                    previewImg.style.display = 'block'; // hiện ảnh
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // Nếu bỏ chọn file, ẩn ảnh
+                previewImg.src = '#';
+                previewImg.style.display = 'none';
+            }
+        });
+    </script>
+}

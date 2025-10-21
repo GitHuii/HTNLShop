@@ -1,3 +1,4 @@
+
 using HTNLShop.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<HtlnshopContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("HTLNShop"));
-    });
+});
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromSeconds(10);

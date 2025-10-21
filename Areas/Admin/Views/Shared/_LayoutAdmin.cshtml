@@ -54,30 +54,30 @@
                 <div class="navbar-nav w-100">
                     @inject Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper<dynamic> HtmlHelper
 
-                    <a asp-area="Admin" asp-controller="HomeAdmin" asp-action="Index"
+                    <a asp-area="Admin" asp-controller="Admin" asp-action="Index"
                        class="nav-item nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
                         <i class="fa fa-tachometer-alt me-2"></i>Dashboard
                     </a>
 
-                    <a asp-area="Admin" asp-controller="HomeAdmin" asp-action="QuanLySanPham"
+                    <a asp-area="Admin" asp-controller="Admin" asp-action="QuanLySanPham"
                        class="nav-item nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "QuanLySanPham" ? "active" : "")">
-                        <i class="fa fa-box me-2"></i>Quản Lý Sản Phẩm
+                        <i class="fa fa-box me-2"></i>Sản Phẩm
                     </a>
 
-                    <a asp-area="Admin" asp-controller="HomeAdmin" asp-action="QuanLyDanhMuc"
+                    @* <a asp-area="Admin" asp-controller="Admin" asp-action="QuanLyDanhMuc"
                        class="nav-item nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "QuanLyDanhMuc" ? "active" : "")">
-                        <i class="fa fa-tags me-2"></i>Quản Lý Danh Mục
-                    </a>
+                        <i class="fa fa-tags me-2"></i>Danh Mục
+                    </a> *@
 
-                    <a asp-area ="Admin" asp-controller="HomeAdmin" asp-action="QuanLyNguoiDung"
+                    <a asp-area ="Admin" asp-controller="Admin" asp-action="QuanLyNguoiDung"
                        class="nav-item nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "QuanLyNguoiDung" ? "active" : "")">
-                        <i class="fa fa-users me-2"></i>Quản Lý Người Dùng
+                        <i class="fa fa-users me-2"></i>Người Dùng
                     </a>
 
-                    <a asp-area="Admin" asp-controller="HomeAdmin" asp-action="QuanLyDonHang"
+                    @* <a asp-area="Admin" asp-controller="Admin" asp-action="QuanLyDonHang"
                        class="nav-item nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "QuanLyDonHang" ? "active" : "")">
                         <i class="fa fa-users me-2"></i>Quản Lý Đơn Hàng
-                    </a>
+                    </a> *@
                 </div>
             </nav>
         </div>
@@ -156,5 +156,7 @@
 
     <!-- Template JS -->
     <script src="~/Admin/js/main.js"></script>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

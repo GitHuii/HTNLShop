@@ -1,0 +1,84 @@
+﻿@model HTNLShop.Data.Product
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Edit Product";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Sửa sản phẩm</h1>
+
+<div class="row">
+    <!-- Form sửa -->
+    <div class="col-sm-12 col-xl-6">
+        <div class="bg-light rounded h-100 p-4">
+            <h6 class="mb-4">Cập nhật sản phẩm</h6>
+            <form method="post" asp-action="EditProduct" enctype="multipart/form-data">
+                <input type="hidden" asp-for="ProductId" />
+
+                <div class="form-floating mb-3">
+                    <input asp-for="ProductName" class="form-control" placeholder="Tên sản phẩm" />
+                    <label asp-for="ProductName"></label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Price" class="form-control" placeholder="Giá" />
+                    <label asp-for="Price"></label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <textarea asp-for="ProductDetail" class="form-control" style="height: 100px" placeholder="Mô tả"></textarea>
+                    <label asp-for="ProductDetail"></label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="StockQuantity" class="form-control" placeholder="Số lượng tồn" />
+                    <label asp-for="StockQuantity"></label>
+                </div>
+
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Ảnh sản phẩm</label>
+                    <input asp-for="ImageUrl" class="form-control" type="file" id="formFile" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId">
+                        <option value="">-- Chọn danh mục --</option>
+                    </select>
+                    <label asp-for="CategoryId"></label>
+                </div>
+
+                <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+                <a asp-action="QuanLySanPham" class="btn btn-secondary ms-2">Quay lại</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Preview ảnh -->
+    <div class="col-sm-12 col-xl-6 d-flex justify-content-center align-items-center">
+        <div class="bg-light rounded h-100 p-4 text-center w-100">
+            <h6 class="mb-4">Xem trước ảnh</h6>
+            <div style="display: flex; align-items: center; justify-content: center; height: 90%; background-color: #f8f9fa; border: 2px dashed #ccc; border-radius: 10px;">
+                <img id="previewImage" src="@Model.ImageUrl" alt="Chưa có ảnh được chọn"
+                     style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const fileInput = document.getElementById("formFile");
+        const previewImage = document.getElementById("previewImage");
+
+        fileInput.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}

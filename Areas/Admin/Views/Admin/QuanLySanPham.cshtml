@@ -10,7 +10,7 @@
 <h1>Quản Lý Sản Phẩm</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="AddProduct" class="btn btn-success m-2">Thêm Sản Phẩm</a>
 </p>
 
 <div class="table-responsive">
@@ -34,12 +34,14 @@
                     <td>@item.Price.ToString("N0") ₫</td>
                     <td>@item.ProductDetail</td>
                     <td>@item.StockQuantity</td>
-                    <td><img src="~/images/@item.ImageUrl" alt="" width="60" /></td>
+                    <td><img src="@item.ImageUrl" alt="" width="60" /></td>
                     <td>@item.Category?.CategoryName</td>
                     <td style="white-space: nowrap;">
-                        <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                        <a asp-action="EditProduct" asp-route-id="@item.ProductId" class="btn btn-warning m-2">Sửa</a> |
+                        <form asp-action="DeleteProduct" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');" style="display:inline;">
+                            <input type="hidden" name="id" value="@item.ProductId" />
+                            <button type="submit" class="btn btn-danger m-2">Xóa</button>
+                        </form>
                     </td>
                 </tr>
             }
@@ -51,7 +53,7 @@
 <div class="d-flex justify-content-center mt-3">
     @Html.PagedListPager(
     Model,
-    page => Url.Action("QuanLySanPham","HomeAdmin", new { page }),
+    page => Url.Action("QuanLySanPham","Admin", new { page }),
         new PagedListRenderOptions
         {
             DisplayLinkToFirstPage = PagedListDisplayMode.Always,
