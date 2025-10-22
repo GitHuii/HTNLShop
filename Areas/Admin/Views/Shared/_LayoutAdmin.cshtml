@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Favicon -->
-    <link rel="icon" href="~/Admin/img/user.jpg" />
+    <link rel="icon" href="~/Assets/img/AdminDashboard/avatar_admin.png" />
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,16 +37,16 @@
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
-                <a asp-controller="HomeAdmin" asp-action="Index" class="navbar-brand mx-4 mb-3">
-                    <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Admin</h3>
+                <a asp-controller="Admin" asp-action="Index" class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Dashboard</h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
-                        <img class="rounded-circle" src="~/Admin/img/user.jpg" alt="User" style="width: 40px; height: 40px;">
+                        <img class="rounded-circle" src="~/Assets/img/AdminDashboard/avatar_admin.png" alt="User" style="width: 40px; height: 40px;">
                         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                     </div>
                     <div class="ms-3">
-                        <h6 class="mb-0">Admin</h6>
+                        <h6 class="mb-0">Huii</h6>
                         <span>Online</span>
                     </div>
                 </div>
@@ -101,18 +101,18 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Có sản phẩm mới được thêm</h6>
-                                <small>5 phút trước</small>
+                                <h6 class="fw-normal mb-0">Xin chào Huii</h6>
+                                <small>1 phút trước</small>
                             </a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img class="rounded-circle me-lg-2" src="~/Admin/img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">Admin</span>
+                            <img class="rounded-circle me-lg-2" src="~/Assets/img/AdminDashboard/avatar_admin.png" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex">Huii</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">Hồ sơ</a>
+                            @* <a href="#" class="dropdown-item">Hồ sơ</a> *@
                             <a href="#" class="dropdown-item">Đăng xuất</a>
                         </div>
                     </div>
@@ -130,9 +130,9 @@
                     <div>
                         &copy; 2025 <strong>Admin Panel</strong>. All Rights Reserved.
                     </div>
-                    <div>
+                    @* <div>
                         Thiết kế bởi <a href="https://htmlcodex.com" target="_blank">HTML Codex</a>
-                    </div>
+                    </div> *@
                 </div>
             </footer>
         </div>
