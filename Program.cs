@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<CartController>();
 builder.Services.AddDbContext<HtlnshopContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("HTLNShop"));
-    });
+});
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromSeconds(10);

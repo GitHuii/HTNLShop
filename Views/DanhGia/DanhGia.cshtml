@@ -1,0 +1,95 @@
+﻿@{
+    ViewData["Title"] = "Đánh Giá Từ Khách Hàng";
+}
+
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary">Phản Hồi & Đánh Giá</h1>
+        <p class="lead text-muted">Ý kiến của bạn là động lực để chúng tôi phát triển.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="card p-4 shadow-sm border-0 mb-4">
+                <h3 class="h5 mb-3 text-success">Đánh Giá Trung Bình</h3>
+                <div class="d-flex align-items-center mb-3">
+                    <span class="display-3 fw-bold text-success me-3">4.7</span>
+                    <div>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star-half-alt text-warning"></i>
+                        <p class="text-muted mb-0">(Dựa trên 245 đánh giá)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-4 shadow-sm border-0">
+                <h3 class="h5 mb-4">Chia Sẻ Trải Nghiệm Của Bạn</h3>
+                <form>
+                    <div class="mb-3">
+                        <label for="reviewName" class="form-label">Tên Khách Hàng</label>
+                        <input type="text" class="form-control" id="reviewName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reviewRating" class="form-label">Xếp Hạng Sản Phẩm (Sao)</label>
+                        <select class="form-select" id="reviewRating" required>
+                            <option value="5">⭐⭐⭐⭐⭐ Tuyệt vời</option>
+                            <option value="4">⭐⭐⭐⭐ Rất tốt</option>
+                            <option value="3">⭐⭐⭐ Tốt</option>
+                            <option value="2">⭐⭐ Khá</option>
+                            <option value="1">⭐ Tệ</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reviewContent" class="form-label">Nội dung chi tiết</label>
+                        <textarea class="form-control" id="reviewContent" rows="4" placeholder="Viết đánh giá của bạn (tối thiểu 50 ký tự)..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mt-2">Gửi Đánh Giá</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <h3 class="h4 mb-4 border-bottom pb-2">Các Đánh Giá Gần Đây</h3>
+
+            <div class="review-item mb-4 p-3 bg-light rounded shadow-sm border-start border-success border-5">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0 text-dark">Nguyễn Bùi Anh Tuấn</h5>
+                    <small class="text-muted">1 ngày trước</small>
+                </div>
+                <div class="rating my-1">
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <span class="ms-2 text-success fw-bold">Laptop vượt trội!</span>
+                </div>
+                <p class="text-secondary mb-0">Hiệu năng máy đúng như quảng cáo, xử lý đồ họa mượt mà. Đóng gói cẩn thận, giao hàng nhanh chóng. Sẽ tiếp tục ủng hộ HTNL.Shop!</p>
+            </div>
+
+            <div class="review-item mb-4 p-3 bg-light rounded shadow-sm border-start border-info border-5">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0 text-dark">Nguyễn Tiến Lượng</h5>
+                    <small class="text-muted">4 ngày trước</small>
+                </div>
+                <div class="rating my-1">
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="far fa-star text-warning"></i>
+                    <span class="ms-2 text-info fw-bold">Sản phẩm tốt!</span>
+                </div>
+                <p class="text-secondary mb-0">Chuột Gaming rất nhạy, phù hợp với tầm giá. Chỉ có điều nhân viên tư vấn hơi chậm trả lời tin nhắn. Hy vọng lần sau sẽ nhanh hơn.</p>
+            </div>
+
+            <div class="text-center mt-5">
+                <button class="btn btn-outline-secondary">Xem Tất Cả Đánh Giá</button>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
