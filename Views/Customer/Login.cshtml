@@ -1,0 +1,38 @@
+﻿@model HTNLShop.ViewModels.LoginVM
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="container d-flex justify-content-center align-items-center py-5" style="min-height: 80vh;">
+    <div class="card shadow-lg border-0 rounded-4" style="width: 100%; max-width: 600px;">
+        <div class="card-header bg-danger text-center py-3 rounded-top-4">
+            <h3 class="mb-0 text-uppercase fw-bold text-white">Đăng nhập</h3>
+        </div>
+        <div class="card-body p-4">
+            <form asp-action="Login" method="post"  asp-route-returnurl ="@ViewBag.ReturnUrl">
+                <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
+                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                <div class="mb-3">
+                    <label asp-for="@Model.Username" class="form-label fw-semibold">Tên đăng nhập <span class="text-danger">*</span></label>
+                    <input asp-for="@Model.Username" class="form-control form-control-lg border-secondary" placeholder="Nhập tên đăng nhập">
+                    <span asp-validation-for="@Model.Username" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="@Model.Password" class="form-label fw-semibold">Mật khẩu <span class="text-danger">*</span></label>
+                    <input asp-for="@Model.Password" class="form-control form-control-lg border-secondary" placeholder="Nhập mật khẩu" type="password">
+                    <span asp-validation-for="@Model.Password" class="text-danger small"></span>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-danger btn-lg px-5 rounded-pill shadow-sm">
+                        <i class="fa fa-user-plus me-2"></i> Đăng Nhập
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card-footer text-center bg-light py-3 rounded-bottom-4">
+            <small>Bạn Không nhớ nổi mật khẩu? <a href="/Customer/Login" class="text-danger fw-semibold">Quên mật khẩu</a></small>
+        </div>
+    </div>
+</div>
+

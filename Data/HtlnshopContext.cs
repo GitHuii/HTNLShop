@@ -31,9 +31,9 @@ public partial class HtlnshopContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-    //        => optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=HTLNShop;Integrated Security=True;Trust Server Certificate=True");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=HTLNShop;Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -49,18 +49,18 @@ public partial class HtlnshopContext : DbContext
 
         modelBuilder.Entity<CartItem>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => new { e.CartId, e.ProductId }).HasName("CartItemsId");
 
             entity.HasIndex(e => new { e.CartId, e.ProductId }, "UQ_Cart_Product").IsUnique();
 
             entity.Property(e => e.Quantity).HasDefaultValue(1);
 
-            entity.HasOne(d => d.Cart).WithMany()
+            entity.HasOne(d => d.Cart).WithMany(p => p.CartItems)
                 .HasForeignKey(d => d.CartId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__CartItems__CartI__32E0915F");
 
-            entity.HasOne(d => d.Product).WithMany()
+            entity.HasOne(d => d.Product).WithMany(p => p.CartItems)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__CartItems__Produ__33D4B598");
@@ -92,16 +92,16 @@ public partial class HtlnshopContext : DbContext
 
         modelBuilder.Entity<OrderItem>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => new { e.OrderId, e.ProductId }).HasName("OrderItemsId");
 
             entity.Property(e => e.Quantity).HasDefaultValue(1);
 
-            entity.HasOne(d => d.Order).WithMany()
+            entity.HasOne(d => d.Order).WithMany(p => p.OrderItems)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__OrderItem__Order__3B75D760");
 
-            entity.HasOne(d => d.Product).WithMany()
+            entity.HasOne(d => d.Product).WithMany(p => p.OrderItems)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__OrderItem__Produ__3C69FB99");
@@ -154,7 +154,7 @@ public partial class HtlnshopContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Users__RoleId__267ABA7A");
         });
-        
+
         modelBuilder.Entity<Category>().HasData(
             new Category { CategoryId = 1, CategoryName = "Laptop" },
             new Category { CategoryId = 2, CategoryName = "PC Gaming" },
@@ -354,7 +354,6 @@ public partial class HtlnshopContext : DbContext
         new Product { ProductId = 147, ProductName = "Chuột không dây DareU LM115G Black", Price = 150000, ProductDetail = "Chuột DareU LM115G Black – giá rẻ, phù hợp văn phòng, pin lâu.", StockQuantity = 25, ImageUrl = "/Assets/img/Products/5/147.jpg", CategoryId = 5 },
         new Product { ProductId = 148, ProductName = "Chuột công thái học Logitech Lift Vertical", Price = 1250000, ProductDetail = "Chuột công thái học Logitech Lift Vertical – giảm căng thẳng cổ tay, thiết kế sang trọng.", StockQuantity = 25, ImageUrl = "/Assets/img/Products/5/148.jpg", CategoryId = 5 },
         new Product { ProductId = 149, ProductName = "Chuột không dây Logitech M190 Black", Price = 250000, ProductDetail = "Chuột Logitech M190 Black – yên tĩnh, thoải mái, pin lâu.", StockQuantity = 25, ImageUrl = "/Assets/img/Products/5/149.jpg", CategoryId = 5 },
-
 
         //Tai nghe
         new Product { ProductId = 150, ProductName = "Tai nghe Gaming Rapoo VH160S Black", Price = 450000, ProductDetail = "Tai nghe gaming Rapoo, thiết kế hiện đại, âm thanh sống động cho trải nghiệm chơi game thoải mái.", StockQuantity = 32, ImageUrl = "/Assets/img/Products/6/150.jpg", CategoryId = 6 },
