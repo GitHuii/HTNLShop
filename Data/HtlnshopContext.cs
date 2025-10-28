@@ -354,6 +354,7 @@ public partial class HtlnshopContext : DbContext
         new Product { ProductId = 147, ProductName = "Chuột không dây DareU LM115G Black", Price = 150000, ProductDetail = "Chuột DareU LM115G Black – giá rẻ, phù hợp văn phòng, pin lâu.", StockQuantity = 25, ImageUrl = "/Assets/img/Products/5/147.jpg", CategoryId = 5 },
         new Product { ProductId = 148, ProductName = "Chuột công thái học Logitech Lift Vertical", Price = 1250000, ProductDetail = "Chuột công thái học Logitech Lift Vertical – giảm căng thẳng cổ tay, thiết kế sang trọng.", StockQuantity = 25, ImageUrl = "/Assets/img/Products/5/148.jpg", CategoryId = 5 },
         new Product { ProductId = 149, ProductName = "Chuột không dây Logitech M190 Black", Price = 250000, ProductDetail = "Chuột Logitech M190 Black – yên tĩnh, thoải mái, pin lâu.", StockQuantity = 25, ImageUrl = "/Assets/img/Products/5/149.jpg", CategoryId = 5 },
+
         //Tai nghe
         new Product { ProductId = 150, ProductName = "Tai nghe Gaming Rapoo VH160S Black", Price = 450000, ProductDetail = "Tai nghe gaming Rapoo, thiết kế hiện đại, âm thanh sống động cho trải nghiệm chơi game thoải mái.", StockQuantity = 32, ImageUrl = "/Assets/img/Products/6/150.jpg", CategoryId = 6 },
         new Product { ProductId = 151, ProductName = "Tai nghe HP HyperX Alpha 2 Wireless Black", Price = 8390000, ProductDetail = "Tai nghe không dây HyperX Alpha 2, chất lượng âm thanh mạnh mẽ, phù hợp cho game thủ chuyên nghiệp.", StockQuantity = 18, ImageUrl = "/Assets/img/Products/6/151.jpg", CategoryId = 6 },
