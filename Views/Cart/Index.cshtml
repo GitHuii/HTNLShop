@@ -78,7 +78,7 @@
                     <div class="d-flex m-3 me-0">
                         <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
                         <a href="#" class="position-relative me-4 my-auto">
-                            <i class="fa fa-shopping-bag fa-2x"></i>
+                            <i class="fa fa-Shopping-bag fa-2x"></i>
                             <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
                         </a>
                         <a href="#" class="my-auto">
@@ -139,7 +139,7 @@
                             <tr>
                                 <th scope="row">
                                 <div class="d-flex align-items-center">
-                                        <img src="~@item.Image" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="@item.ProductName">
+                                        <img src="@item.Image" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="@item.ProductName">
                                 </div>
                             </th>
                             <td>
@@ -152,30 +152,64 @@
                             <td>
                                 <p class="mb-0 mt-4">@item.Price</p>
                             </td>
-                            <td>
+                            
+                            @* <td>
                                 <div class="input-group quantity mt-4" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                        <form asp-action="DecreaseQuantity" asp-controller="Cart" asp-route-id="@item.ProductId" method="post">
+                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border decrease-btn" data-id="@item.ProductId">
                                             <i class="fa fa-minus"></i>
                                         </button>
+                                        </form>
                                     </div>
                                     <input type="text" class="form-control form-control-sm text-center border-0" value="@item.Quantity">
+                                    <form asp-action="IncreaseQuantity" asp-controller="Cart" asp-route-id="@item.ProductId" method="post">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border increase-btn" data-id="@item.ProductId">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
+                                    </form>
                                 </div>
                             </td>
+                             *@
                             <td>
-                                <p class="mb-0 mt-4">@item.Pay</p>
+                                <div class="input-group quantity mt-4" style="width: 100px;">
+                                    <button class="btn btn-sm btn-minus rounded-circle bg-light border decrease-btn" data-id="@item.ProductId">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+
+                                    <input type="text" id="qty-@item.ProductId" class="form-control form-control-sm text-center border-0" value="@item.Quantity" readonly>
+
+                                    <button class="btn btn-sm btn-plus rounded-circle bg-light border increase-btn" data-id="@item.ProductId">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
                             </td>
+
+                            
+                            <td>
+                                @* <p class="mb-0 mt-4">@item.Pay</p> *@
+                                <p class="mb-0 mt-4 cart-total">@Model.Sum(pr => pr.Pay)</p>
+                            </td>
+                           
                                 @* <a asp-action="RemoveCart" asp-controller="Cart" asp-route-productId="@item.ProductId"> *@
                                 <td>
                                     <a asp-action="RemoveCart" asp-controller="Cart" asp-route-productId="@item.ProductId" class="btn btn-md rounded-circle bg-light border mt-4">
                                         <i class="fa fa-times text-danger"></i>
                                     </a>
                                 </td>
+                            <td class="d-flex align-items-center gap-2 mt-4">
+                                @* <a asp-action="RemoveCart" asp-controller="Cart" asp-route-productId="@item.ProductId"
+                                   class="btn btn-md rounded-circle bg-light border">
+                                    <i class="fa fa-times text-danger"></i>
+                                </a> *@
+                                <a asp-action="BuyNow" asp-controller="Cart" asp-route-productId="@item.ProductId"
+                                   class="btn btn-sm btn-primary rounded-pill px-3 text-white">
+                                    Mua ngay
+                                </a>
+                            </td>
+
                         </tr>
                         }
                     </tbody>
@@ -207,7 +241,7 @@
                             <h5 class="mb-0 ps-4 me-4">Total</h5>
                             <p class="mb-0 pe-4">@Model.Sum(pr => pr.Pay)</p>
                         </div>
-                        <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Proceed Checkout</button>
+                    <a asp-controller="Cart" asp-action="CheckOut" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Proceed Checkout</a>
                     </div>
                 </div>
             </div>
@@ -289,7 +323,7 @@
     </div> *@
     <!-- Footer End -->
     <!-- Copyright Start -->
-    <div class="container-fluid copyright bg-dark py-4">
+    @* <div class="container-fluid copyright bg-dark py-4">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -303,7 +337,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
     <!-- Copyright End -->
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
@@ -319,4 +353,49 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script> *@
+@* <script>
+    $(document).ready(function() {
+        $(".increase-btn").click(function() {
+            const id = $(this).data("id");
+            $.post("/Cart/IncreaseQuantity", { productId: id }, function() {
+                location.reload();
+            });
+        });
+
+        $(".decrease-btn").click(function() {
+            const id = $(this).data("id");
+            $.post("/Cart/DecreaseQuantity", { productId: id }, function() {
+                location.reload();
+            });
+        });
+    });
+</script> *@
+
 @* </body> *@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(function() {
+        $(".increase-btn").click(function(e) {
+            e.preventDefault();
+            const id = $(this).data("id");
+            $.post("/Cart/IncreaseQuantity", { id: id }, function(res) {
+                if (res.success) {
+                    $("#qty-" + id).val(res.quantity);
+                    $(".cart-total").text(res.total.toLocaleString());
+                }
+            });
+        });
+
+        $(".decrease-btn").click(function(e) {
+            e.preventDefault();
+            const id = $(this).data("id");
+            $.post("/Cart/DecreaseQuantity", { id: id }, function(res) {
+                if (res.success) {
+                    $("#qty-" + id).val(res.quantity);
+                    $(".cart-total").text(res.total.toLocaleString());
+                }
+            });
+        });
+    });
+</script>
+
