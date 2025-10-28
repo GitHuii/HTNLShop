@@ -1,4 +1,4 @@
-﻿using HTNLShop.Migrations;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using HTNLShop.Data;
 namespace HTNLShop.Controllers
