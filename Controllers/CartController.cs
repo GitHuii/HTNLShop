@@ -120,9 +120,34 @@ namespace HTNLShop.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        [HttpPost]
         public IActionResult RemoveCart(int productId)
         {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (!int.TryParse(userIdStr, out int userId)) return Unauthorized();
+
+                var cartItem = _context.CartItems
+                    .Include(ci => ci.Cart)
+                    .FirstOrDefault(ci => ci.ProductId == productId && ci.Cart.UserId == userId);
+
+                if (cartItem != null)
+                {
+                    _context.CartItems.Remove(cartItem);
+                    _context.SaveChanges();
+
+                    var total = _context.CartItems
+                        .Where(ci => ci.Cart.UserId == userId)
+                        .Sum(ci => ci.Quantity * ci.Product.Price);
+
+                    return Json(new { success = true, total });
+                }
+
+                return Json(new { success = false, message = "Không tìm thấy sản phẩm." });
+            }
+
+            // Xử lý cho Session
             var cart = Cart;
             var item = cart.FirstOrDefault(p => p.ProductId == productId);
             if (item != null)
@@ -130,8 +155,22 @@ namespace HTNLShop.Controllers
                 cart.Remove(item);
                 HttpContext.Session.Set(CART_KEY, cart);
             }
-            return RedirectToAction("Index");
+
+            var totalSession = cart.Sum(i => i.Pay);
+            return Json(new { success = true, total = totalSession });
         }
+
+        //public IActionResult RemoveCart(int productId)
+        //{
+        //    var cart = Cart;
+        //    var item = cart.FirstOrDefault(p => p.ProductId == productId);
+        //    if (item != null)
+        //    {
+        //        cart.Remove(item);
+        //        HttpContext.Session.Set(CART_KEY, cart);
+        //    }
+        //    return RedirectToAction("Index");
+        //}
         //[HttpPost]
         //public IActionResult IncreaseQuantity(int id)
         //{
@@ -206,14 +245,22 @@ namespace HTNLShop.Controllers
 
                 if (cartItem != null)
                 {
-                    cartItem.Quantity--;
-                    _context.SaveChanges();
+                    if (cartItem.Quantity > 1)
+                    {
+                        cartItem.Quantity--;
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        _context.CartItems.Remove(cartItem);
+                        _context.SaveChanges();
+                    }
                 }
 
                 var sum = _context.CartItems
                     .Where(ci => ci.Cart.UserId == userId)
                     .Sum(ci => ci.Quantity * ci.Product.Price);
-
+                
                 return Json(new { success = true, quantity = cartItem?.Quantity ?? 0, sum });
             }
             var cart = Cart;
@@ -367,7 +414,7 @@ namespace HTNLShop.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult BuyNow(int productId)
+        public IActionResult BuyNow(int productId,int quantity)
         {
             //var CustormerId = int.Parse(HttpContext.User.Claims.ElementAt(0).ToString());
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -388,6 +435,7 @@ namespace HTNLShop.Controllers
             {
                 return RedirectToAction("Index", "Cart"); // không có sản phẩm này trong giỏ
             }
+            item.Quantity = quantity;
 
             // Tạo model chỉ gồm 1 sản phẩm để đưa sang trang CheckOut
             var model = new List<CartItems>
@@ -472,7 +520,7 @@ namespace HTNLShop.Controllers
         }*/
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> CheckOut(CheckoutVM model, int? BuyNowProductId)
+        public async Task<IActionResult> CheckOut(CheckoutVM model, int? BuyNowProductId,int quantity)
         {
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!int.TryParse(userIdStr, out int userId)) return Unauthorized();
@@ -493,17 +541,21 @@ namespace HTNLShop.Controllers
                     return RedirectToAction("Index", "SanPham");
                 }
 
-                // Tạo order chỉ cho 1 sản phẩm
+                if (product.StockQuantity < quantity)
+                {
+                    TempData["Message"] = "Không đủ hàng để mua.";
+                    return RedirectToAction("Index", "SanPham");
+                }
 
-                    var order = new Order
-                    {
-                        UserId = userId,
-                        OrderDate = DateTime.Now,
-                        TotalPrice = product.Price,
-                        ShippingAddress = model.GiongKhachHang? model.Address:customer.Address,
-                        Status = "Done"
-                    };
-                
+                var order = new Order
+                {
+                    UserId = userId,
+                    OrderDate = DateTime.Now,
+                    TotalPrice = product.Price * quantity,
+                    ShippingAddress = model.GiongKhachHang ? model.Address : customer.Address,
+                    Status = "Done"
+                };
+
                 await _context.Orders.AddAsync(order);
                 await _context.SaveChangesAsync();
 
@@ -511,14 +563,28 @@ namespace HTNLShop.Controllers
                 {
                     OrderId = order.OrderId,
                     ProductId = product.ProductId,
-                    Quantity = 1,
+                    Quantity = quantity,
                     SalePrice = product.Price
                 });
 
-                product.StockQuantity -= 1;
+                product.StockQuantity -= quantity;
                 await _context.SaveChangesAsync();
 
                 TempData["Message"] = "Đặt hàng thành công (Mua ngay)";
+                // Xóa sản phẩm khỏi giỏ hàng (nếu có)
+                var cart1 = await _context.Carts
+                    .Include(c => c.CartItems)
+                    .FirstOrDefaultAsync(c => c.UserId == userId);
+
+                if (cart1 != null)
+                {
+                    var item = cart1.CartItems.FirstOrDefault(ci => ci.ProductId == product.ProductId);
+                    if (item != null)
+                    {
+                        _context.CartItems.Remove(item);
+                        await _context.SaveChangesAsync();
+                    }
+                }
                 return RedirectToAction("Index", "SanPham");
             }
             // ✅ Load cart từ DB thay vì Session
