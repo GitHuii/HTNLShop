@@ -151,6 +151,18 @@ public partial class HtlnshopContext : DbContext
                 .HasConstraintName("FK__Users__RoleId__267ABA7A");
         });
 
+        modelBuilder.Entity<Role>().HasData(
+            new Role { RoleId = 1, RoleName = "Admin" },
+            new Role { RoleId = 2, RoleName = "Customer" }
+            );
+
+        modelBuilder.Entity<User>().HasData(
+            new User { UserId = 1, Username = "admin", Password = "admin", FullName = "Huii", Email = "huii@gmail.com" , Address = "Ha Noi" , RoleId = 1, PhoneNumber = "0123456789" },
+            new User { UserId = 2, Username = "nam", Password = "123", FullName = "nam", Email = "nam@gmail.com", Address = "Hung Yen", RoleId = 2, PhoneNumber = "0123456789" },
+            new User { UserId = 3, Username = "luong", Password = "123", FullName = "luong", Email = "luong@gmail.com", Address = "Hai Phong", RoleId = 2, PhoneNumber = "0123456789" },
+            new User { UserId = 4, Username = "huy", Password = "123", FullName = "huy", Email = "huy@gmail.com", Address = "Ha Noi", RoleId = 2, PhoneNumber = "0123456789" }
+            );
+
         modelBuilder.Entity<Category>().HasData(
             new Category { CategoryId = 1, CategoryName = "Laptop" },
             new Category { CategoryId = 2, CategoryName = "PC Gaming" },
