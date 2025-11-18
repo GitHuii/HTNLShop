@@ -153,26 +153,7 @@
                                 <p class="mb-0 mt-4">@item.Price</p>
                             </td>
                             
-                            @* <td>
-                                <div class="input-group quantity mt-4" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <form asp-action="DecreaseQuantity" asp-controller="Cart" asp-route-id="@item.ProductId" method="post">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border decrease-btn" data-id="@item.ProductId">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                        </form>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0" value="@item.Quantity">
-                                    <form asp-action="IncreaseQuantity" asp-controller="Cart" asp-route-id="@item.ProductId" method="post">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border increase-btn" data-id="@item.ProductId">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                    </form>
-                                </div>
-                            </td>
-                             *@
+                          
                             <td>
                                 <div class="input-group quantity mt-4" style="width: 100px;">
                                     <button class="btn btn-sm btn-minus rounded-circle bg-light border decrease-btn" data-id="@item.ProductId">
@@ -190,7 +171,7 @@
                             
                             <td>
                                 @* <p class="mb-0 mt-4">@item.Pay</p> *@
-                                <p class="mb-0 mt-4 cart-total">@item.Pay</p>
+                                <p class="mb-0 mt-4 cart-total-@item.ProductId">@item.Pay</p>
                             </td>
                            
                                 @* <a asp-action="RemoveCart" asp-controller="Cart" asp-route-productId="@item.ProductId"> *@
@@ -231,7 +212,7 @@
                             <h1 class="display-6 mb-4">Cart <span class="fw-normal">Total</span></h1>
                             <div class="d-flex justify-content-between mb-4">
                                 <h5 class="mb-0 me-4">Subtotal:</h5>
-                                <p class="mb-0">@Model.Sum(pr => pr.Pay)</p>
+                            <p class="mb-0 cart-Subtotal">@Model.Sum(pr => pr.Pay)</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <h5 class="mb-0 me-4">Shipping</h5>
@@ -242,7 +223,7 @@
                             @* <p class="mb-0 text-end">Shipping to Ukraine.</p> *@
                         </div>
                         <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                            <h5 class="mb-0 ps-4 me-4">Total</h5>
+                        <h5 class="mb-0 ps-4 me-4 cart-Subbtotal">Total</h5>
                             <p class="mb-0 pe-4">@Model.Sum(pr => pr.Pay)</p>
                         </div>
                     <a asp-controller="Cart" asp-action="CheckOut" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Proceed Checkout</a>
@@ -251,195 +232,145 @@
             </div>
         </div>
     </div>
-    <!-- Cart Page End -->
-    <!-- Footer Start -->
-    @* <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
-        <div class="container py-5">
-            <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5) ;">
-                <div class="row g-4">
-                    <div class="col-lg-3">
-                        <a href="#">
-                            <h1 class="text-primary mb-0">Fruitables</h1>
-                            <p class="text-secondary mb-0">Fresh products</p>
-                        </a>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="position-relative mx-auto">
-                            <input class="form-control border-0 w-100 py-3 px-4 rounded-pill" type="number" placeholder="Your Email">
-                            <button type="submit" class="btn btn-primary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;">Subscribe Now</button>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="d-flex justify-content-end pt-3">
-                            <a class="btn  btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-youtube"></i></a>
-                            <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-item">
-                        <h4 class="text-light mb-3">Why People Like us!</h4>
-                        <p class="mb-4">
-                            typesetting, remaining essentially unchanged. It was
-                            popularised in the 1960s with the like Aldus PageMaker including of Lorem Ipsum.
-                        </p>
-                        <a href="" class="btn border-secondary py-2 px-4 rounded-pill text-primary">Read More</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="d-flex flex-column text-start footer-item">
-                        <h4 class="text-light mb-3">Shop Info</h4>
-                        <a class="btn-link" href="">About Us</a>
-                        <a class="btn-link" href="">Contact Us</a>
-                        <a class="btn-link" href="">Privacy Policy</a>
-                        <a class="btn-link" href="">Terms & Condition</a>
-                        <a class="btn-link" href="">Return Policy</a>
-                        <a class="btn-link" href="">FAQs & Help</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="d-flex flex-column text-start footer-item">
-                        <h4 class="text-light mb-3">Account</h4>
-                        <a class="btn-link" href="">My Account</a>
-                        <a class="btn-link" href="">Shop details</a>
-                        <a class="btn-link" href="">Shopping Cart</a>
-                        <a class="btn-link" href="">Wishlist</a>
-                        <a class="btn-link" href="">Order History</a>
-                        <a class="btn-link" href="">International Orders</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-item">
-                        <h4 class="text-light mb-3">Contact</h4>
-                        <p>Address: 1429 Netus Rd, NY 48247</p>
-                        <p>Email: Example@gmail.com</p>
-                        <p>Phone: +0123 4567 8910</p>
-                        <p>Payment Accepted</p>
-                        <img src="img/payment.png" class="img-fluid" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> *@
-    <!-- Footer End -->
-    <!-- Copyright Start -->
-    @* <div class="container-fluid copyright bg-dark py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All right reserved.</span>
-                </div>
-                <div class="col-md-6 my-auto text-center text-md-end text-white">
-                    <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
-                    <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
-                    <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-                    Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
-                </div>
-            </div>
-        </div>
-    </div> *@
-    <!-- Copyright End -->
-    <!-- Back to Top -->
     <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
 
-    @* <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script> *@
-@* <script>
-    $(document).ready(function() {
-        $(".increase-btn").click(function() {
-            const id = $(this).data("id");
-            $.post("/Cart/IncreaseQuantity", { productId: id }, function() {
-                location.reload();
-            });
-        });
-
-        $(".decrease-btn").click(function() {
-            const id = $(this).data("id");
-            $.post("/Cart/DecreaseQuantity", { productId: id }, function() {
-                location.reload();
-            });
-        });
-    });
-</script> *@
-
-@* </body> *@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(function() {
-        $(".increase-btn").click(function(e) {
-            e.preventDefault();
-            const id = $(this).data("id");
-            $.post("/Cart/IncreaseQuantity", { id: id }, function(res) {
-                if (res.success) {
-                    $("#qty-" + id).val(res.quantity);
-                    $(".cart-total").text(res.total.toLocaleString());
-                }
-            });
-        });
-
-            $(".decrease-btn").click(function(e) {
-        e.preventDefault();
-        const id = $(this).data("id");
-        const row = $(this).closest("tr"); // ✅ Di chuyển lên đây
-
-        $.post("/Cart/DecreaseQuantity", { id: id }, function(res) {
-            if (res.success) {
-                if(res.quantity > 0) {
-                    $("#qty-" + id).val(res.quantity);
-                    $(".cart-total").text(res.total.toLocaleString());
-                } else {
-                    // ✅ Xóa hàng khi quantity = 0
-                    row.fadeOut(300, function() {
-                        $(this).remove();
-                        updateCartTotal(res.sum);
-                    });
+    $(function () {
+        // helper: parse number from text like "1,234.56" or "1234"
+        function parseNumber(txt) {
+            if (txt === null || txt === undefined) return 0;
+            // loại hết ký tự không phải số, dấu chấm, dấu phẩy, giữ dấu thập phân cuối cùng nếu có
+            var cleaned = String(txt).replace(/[^0-9\.\,]/g, '');
+            // chuyển dấu phẩy sang rỗng nếu có cả ',' và '.': giả sử ',' là thousands
+            if (cleaned.indexOf(',') > -1 && cleaned.indexOf('.') > -1) {
+                cleaned = cleaned.replace(/,/g, '');
+            } else {
+                // nếu chỉ có ',', chuyển thành '.'
+                if (cleaned.indexOf(',') > -1 && cleaned.indexOf('.') === -1) {
+                    cleaned = cleaned.replace(/,/g, '.');
                 }
             }
-        });
-    });
-    function updateCartTotal(total) {
-            $(".cart-total").text(sum.toLocaleString());
-            $("p.mb-0.pe-4").text(sum.toLocaleString());
-            $("p.mb-0:contains('Subtotal')").next("p").text(sum.toLocaleString());
+            var n = parseFloat(cleaned);
+            return isNaN(n) ? 0 : n;
         }
-    });
-    $(function() {
-    // Remove product
-        $(".remove-btn").click(function(e) {
-            e.preventDefault();
-            const id = $(this).data("id");
-            const row = $(this).closest("tr");
 
-            $.post("/Cart/RemoveCart", { productId: id }, function(res) {
-                if (res.success) {
-                    row.fadeOut(300, function() { $(this).remove(); });
-                    updateCartTotal(res.total);
-                } else {
-                    alert(res.message || "Xóa sản phẩm thất bại!");
+        // Lấy price từ hàng (fallback khi server không trả lineTotal)
+        function getPriceFromRow($row) {
+            // theo cấu trúc <tr> -> th(product) / td(name) / td(price) ...
+            // price thường ở td index 1
+            var txt = $row.find("td").eq(1).text() || $row.find("p.mb-0.mt-4").first().text();
+            return parseNumber(txt);
+        }
+
+        // Cập nhật hiển thị subtotal / total ở nhiều chỗ
+        function updateCartTotalUI(total) {
+            var formatted = (total || 0).toLocaleString();
+            // subtotal trên card (class cart-Subtotal)
+            $(".cart-Subtotal").text(formatted);
+            // phần total ở block phải (your p.mb-0.pe-4)
+            $("p.mb-0.pe-4").text(formatted);
+            // nếu bạn lỡ tạo 1 element id #subtotal hoặc #cart-total, cập nhật luôn (an toàn)
+            $("#subtotal").text(formatted);
+            $("#cart-total").text(formatted);
+        }
+
+        // Delegate events để an toàn khi xóa row
+        $(document).on("click", ".increase-btn", function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            var $row = $(this).closest("tr");
+
+            $.ajax({
+                url: "/Cart/IncreaseQuantity",
+                type: "POST",
+                data: { id: id },
+                success: function (res) {
+                    if (!res) return;
+
+                    var qty = res.quantity ?? parseInt($("#qty-" + id).val() || 0) + 1;
+                    // cập nhật input quantity
+                    $("#qty-" + id).val(qty);
+
+                    // lineTotal: ưu tiên server trả, nếu không có tự tính bằng price*qty
+                    var lineTotal = (res.lineTotal !== undefined) ? res.lineTotal : (getPriceFromRow($row) * qty);
+                    $(".cart-total-" + id).text(lineTotal.toLocaleString());
+
+                    // total: ưu tiên server trả
+                    var total = (res.total !== undefined) ? res.total : null;
+                    if (total !== null) updateCartTotalUI(total);
+                },
+                error: function () {
+                    alert("Lỗi khi tăng số lượng. Vui lòng thử lại.");
                 }
             });
-    }   );
+        });
 
-    // Update cart total helper
-        function updateCartTotal(total) {
-            $(".cart-total").text(total.toLocaleString());
-            $("p.mb-0.pe-4").text(total.toLocaleString());
-            $("p.mb-0:contains('Subtotal')").next("p").text(total.toLocaleString());
-        }
+        $(document).on("click", ".decrease-btn", function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            var $row = $(this).closest("tr");
+
+            $.ajax({
+                url: "/Cart/DecreaseQuantity",
+                type: "POST",
+                data: { id: id },
+                success: function (res) {
+                    if (!res) return;
+
+                    if (res.success === false) {
+                        alert(res.message || "Không thể giảm số lượng.");
+                        return;
+                    }
+
+                    var qty = res.quantity ?? parseInt($("#qty-" + id).val() || 0) - 1;
+                    if (qty > 0) {
+                        $("#qty-" + id).val(qty);
+                        var lineTotal = (res.lineTotal !== undefined) ? res.lineTotal : (getPriceFromRow($row) * qty);
+                        $(".cart-total-" + id).text(lineTotal.toLocaleString());
+                    } else {
+                        // remove row
+                        $row.fadeOut(250, function () { $(this).remove(); });
+                    }
+
+                    if (res.total !== undefined) updateCartTotalUI(res.total);
+                },
+                error: function () {
+                    alert("Lỗi khi giảm số lượng. Vui lòng thử lại.");
+                }
+            });
+        });
+
+        $(document).on("click", ".remove-btn", function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            var $row = $(this).closest("tr");
+
+            $.ajax({
+                url: "/Cart/RemoveCart",
+                type: "POST",
+                data: { productId: id },
+                success: function (res) {
+                    if (!res) return;
+
+                    if (res.success) {
+                        $row.fadeOut(250, function () { $(this).remove(); });
+                        if (res.total !== undefined) updateCartTotalUI(res.total);
+                    } else {
+                        alert(res.message || "Xóa sản phẩm thất bại!");
+                    }
+                },
+                error: function () {
+                    alert("Lỗi khi xóa sản phẩm. Vui lòng thử lại.");
+                }
+            });
+        });
+
     });
 </script>
+
+
 
 
