@@ -32,10 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\Assets\img\1\1.png" />
     <None Include="wwwroot\Assets\img\1\2.jpg" />
     <None Include="wwwroot\Assets\img\1\3.png" />

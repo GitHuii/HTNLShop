@@ -20,4 +20,6 @@ public partial class Product
     public int CategoryId { get; set; }
 
     public virtual Category Category { get; set; } = null!;
+
+    public ICollection<Evaluate>? Products { get; set; } = new List<Evaluate>();
 }
