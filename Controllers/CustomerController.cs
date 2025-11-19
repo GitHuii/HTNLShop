@@ -77,14 +77,14 @@ namespace HTNLShop.Controllers
 
                 if (customer != null)
                 {
-                    // ✅ Gắn đầy đủ claim, đặt "CustomerId" riêng để dùng ở CheckOut
+                 
                     var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, customer.UserId.ToString()),
-                new Claim("CustomerId", customer.UserId.ToString()), // quan trọng ✅
+                new Claim("CustomerId", customer.UserId.ToString()), 
                 new Claim(ClaimTypes.Name, customer.FullName ?? ""),
                 new Claim(ClaimTypes.Email, customer.Email ?? ""),
-                new Claim(ClaimTypes.MobilePhone, customer.PhoneNumber ?? ""), // dùng ClaimTypes.MobilePhone ✅
+                new Claim(ClaimTypes.MobilePhone, customer.PhoneNumber ?? ""), 
                 new Claim(ClaimTypes.StreetAddress, customer.Address ?? ""),
                 new Claim(ClaimTypes.Role, "Customer")
             };
@@ -117,6 +117,17 @@ namespace HTNLShop.Controllers
         {
             return View();
         }
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Xóa session nếu bạn dùng Session (bạn đang dùng trong giỏ hàng)
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Login", "Customer");
+        }
+
     }
 }
 //using AutoMapper;
