@@ -11,5 +11,6 @@
         public string CategoryName { get; set; } = null!;
         public int StockQuantity { get; set; }
         public List<ProductVM> SameCategoryProduct { get; set; }
+        public List<ReviewVM> Reviews { get; set; } 
     }
 }
