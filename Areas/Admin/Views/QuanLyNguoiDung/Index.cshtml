@@ -1,0 +1,70 @@
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
+@model IPagedList<HTNLShop.Data.User>
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Quản Lý Người Dùng</h1>
+
+<p>
+    <a asp-action="AddUser" class="btn btn-success m-2">Thêm Người Dùng</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table text-start align-middle table-bordered table-hover mb-0" style="table-layout: fixed; width: 100%;">
+        <thead>
+            <tr class="text-dark">
+                <th style="width: 12%;">Họ Tên</th>
+                <th style="width: 12%;">Email</th>
+                <th style="width: 12%;">Số Điện Thoại</th>
+                <th style="width: 12%;">Địa Chỉ</th>
+                <th style="width: 12%;">Tài Khoản</th>
+                <th style="width: 12%;">Mật Khẩu</th>
+                <th style="width: 12%;">Vai Trò</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.FullName</td>
+                    <td>@item.Email</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>@item.Address</td>
+                    <td>@item.Username</td>
+                    <td>@item.Password</td>
+                    <td>@item.Role.RoleName</td>
+                  
+                    <td style="white-space: nowrap;">
+                        <a asp-action="EditUser" asp-route-id="@item.UserId" class="btn btn-warning m-2">Sửa</a> |
+                        <form asp-action="DeleteUser" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');" style="display:inline;">
+                            <input type="hidden" name="id" value="@item.UserId" />
+                            <button type="submit" class="btn btn-danger m-2">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div class="d-flex justify-content-center mt-3">
+    @Html.PagedListPager(
+    Model,
+    page => Url.Action("Index","QuanLyNguoiDung", new { page }),
+        new PagedListRenderOptions
+        {
+            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+            DisplayLinkToLastPage = PagedListDisplayMode.Always,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" }
+        })
+</div>

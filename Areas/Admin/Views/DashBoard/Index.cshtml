@@ -1,0 +1,264 @@
+﻿@using HTNLShop.Areas.Admin.Controllers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- Statistics Cards -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-users fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Tổng Người Dùng</p>
+                    <h6 class="mb-0">@Model.TotalUsers</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-box fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Tổng Sản Phẩm</p>
+                    <h6 class="mb-0">@Model.TotalProducts</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-shopping-cart fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Tổng Đơn Hàng</p>
+                    <h6 class="mb-0">@Model.TotalOrders</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-dollar-sign fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Tổng Doanh Thu</p>
+                    <h6 class="mb-0">@Model.TotalRevenue.ToString("N0") VNĐ</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alerts -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-6">
+            <div class="bg-light rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h6 class="mb-0">Đơn Hàng Chờ Xử Lý</h6>
+                    <a asp-controller="QuanLyDonHang" asp-action="Index" class="btn btn-sm btn-primary">Xem Chi Tiết</a>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="fs-1 fw-bold text-warning">@Model.PendingOrders</span>
+                    <span class="ms-2">đơn hàng cần xử lý</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="bg-light rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h6 class="mb-0">Sản Phẩm Sắp Hết Hàng</h6>
+                    <a asp-controller="Admin" asp-action="QuanLySanPham" class="btn btn-sm btn-primary">Xem Chi Tiết</a>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="fs-1 fw-bold text-danger">@Model.LowStockProducts</span>
+                    <span class="ms-2">sản phẩm cần nhập thêm</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Doanh Thu Theo Tháng</h6>
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Đơn Hàng Theo Tháng</h6>
+                <canvas id="ordersChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Top Products & Recent Orders -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Top 5 Sản Phẩm Bán Chạy</h6>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Sản Phẩm</th>
+                                <th>Số Lượng</th>
+                                <th>Doanh Thu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model.TopSellingProducts)
+                            {
+                                <tr>
+                                    <td>@product.ProductName</td>
+                                    <td>@product.TotalQuantity</td>
+                                    <td>@product.TotalRevenue.ToString("N0") VNĐ</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Đơn Hàng Gần Đây</h6>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Khách Hàng</th>
+                                <th>Ngày</th>
+                                <th>Tổng Tiền</th>
+                                <th>Trạng Thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model.RecentOrders)
+                            {
+                                <tr>
+                                    <td>#@order.OrderId</td>
+                                    <td>@order.CustomerName</td>
+                                    <td>@order.OrderDate.ToString("dd/MM/yyyy")</td>
+                                    <td>@order.TotalPrice.ToString("N0") VNĐ</td>
+                                    <td>
+                                        <span class="badge bg-@(order.Status == "Completed" || order.Status == "Đã giao" ? "success" : order.Status == "Pending" || order.Status == "Chờ xử lý" ? "warning" : "info")">
+                                            @order.Status
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Dữ liệu từ server
+        var revenueData = @Html.Raw(Json.Serialize(Model.MonthlyRevenue));
+        var ordersData = @Html.Raw(Json.Serialize(Model.MonthlyOrders));
+
+        // Biểu đồ Doanh Thu
+        var revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: revenueData.map(d => d.month),
+                datasets: [{
+                    label: 'Doanh Thu (VNĐ)',
+                    data: revenueData.map(d => d.value),
+                    backgroundColor: 'rgba(0, 156, 255, 0.2)',
+                    borderColor: 'rgba(0, 156, 255, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString('vi-VN') + ' VNĐ';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Biểu đồ Đơn Hàng
+        var ordersCtx = document.getElementById('ordersChart').getContext('2d');
+        new Chart(ordersCtx, {
+            type: 'bar',
+            data: {
+                labels: ordersData.map(d => d.month),
+                datasets: [{
+                    label: 'Số Đơn Hàng',
+                    data: ordersData.map(d => d.value),
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}
+
+<style>
+    canvas {
+        height: 300px !important;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .badge {
+        padding: 0.5em 0.75em;
+        font-size: 0.85em;
+    }
+
+    .bg-light {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .fs-1 {
+        font-size: 2.5rem !important;
+    }
+</style>

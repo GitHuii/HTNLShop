@@ -10,7 +10,7 @@
 <h1>Quản Lý Sản Phẩm</h1>
 
 <p>
-    <a asp-action="AddProduct" class="btn btn-success m-2">Thêm Sản Phẩm</a>
+    <a asp-controller="QuanLySanPham" asp-action="AddProduct" class="btn btn-success m-2">Thêm Sản Phẩm</a>
 </p>
 
 <div class="table-responsive">
@@ -38,6 +38,7 @@
                     <td>@item.Category?.CategoryName</td>
                     <td style="white-space: nowrap;">
                         <a asp-action="EditProduct" asp-route-id="@item.ProductId" class="btn btn-warning m-2">Sửa</a> |
+
                         <form asp-action="DeleteProduct" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');" style="display:inline;">
                             <input type="hidden" name="id" value="@item.ProductId" />
                             <button type="submit" class="btn btn-danger m-2">Xóa</button>
@@ -49,11 +50,10 @@
     </table>
 </div>
 
-
 <div class="d-flex justify-content-center mt-3">
     @Html.PagedListPager(
     Model,
-    page => Url.Action("QuanLySanPham","Admin", new { page }),
+    page => Url.Action("Index", "QuanLySanPham", new { page }),
         new PagedListRenderOptions
         {
             DisplayLinkToFirstPage = PagedListDisplayMode.Always,

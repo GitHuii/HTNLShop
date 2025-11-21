@@ -1,0 +1,375 @@
+﻿@model IEnumerable<HTNLShop.Data.Order>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Quản lý Đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2><i class="fas fa-shopping-cart"></i> Quản lý Đơn hàng</h2>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Bộ lọc và tìm kiếm -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form asp-action="Index" method="get" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Tìm kiếm</label>
+                    <input type="text" name="searchTerm" class="form-control"
+                           placeholder="Mã đơn hàng, tên khách hàng..."
+                           value="@ViewBag.SearchTerm">
+                </div>
+                @* <div class="col-md-4">
+                    <label class="form-label">Trạng thái</label>
+                    <select name="status" class="form-select">
+                        <option value="">Tất cả</option>
+                        <option value="Chờ xác nhận" selected="@(ViewBag.CurrentStatus == "Chờ xác nhận")">Chờ xác nhận</option>
+                        <option value="Đang xử lý" selected="@(ViewBag.CurrentStatus == "Đang xử lý")">Đang xử lý</option>
+                        <option value="Đang giao" selected="@(ViewBag.CurrentStatus == "Đang giao")">Đang giao</option>
+                        <option value="Đã giao" selected="@(ViewBag.CurrentStatus == "Đã giao")">Đã giao</option>
+                        <option value="Đã hủy" selected="@(ViewBag.CurrentStatus == "Đã hủy")">Đã hủy</option>
+                    </select>
+                </div> *@
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="fas fa-search"></i> Lọc
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-redo"></i> Làm mới
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Thống kê nhanh -->
+    @* <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <h5>Chờ xác nhận</h5>
+                    <h3>@Model.Count(o => o.Status == "Chờ xác nhận")</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h5>Đang xử lý</h5>
+                    <h3>@Model.Count(o => o.Status == "Đang xử lý")</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5>Đang giao</h5>
+                    <h3>@Model.Count(o => o.Status == "Đang giao")</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5>Đã giao</h5>
+                    <h3>@Model.Count(o => o.Status == "Đã giao")</h3>
+                </div>
+            </div>
+        </div>
+    </div> *@
+
+    <!-- Bảng danh sách đơn hàng -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th width="5%"></th>
+                            <th>Mã ĐH</th>
+                            <th>Ngày đặt</th>
+                            <th>Khách hàng</th>
+                            <th>Số sản phẩm</th>
+                            <th>Tổng tiền</th>
+                            <th>Địa chỉ giao hàng</th>
+                            <th>Trạng thái</th>
+                            @* <th>Thao tác</th> *@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            @foreach (var order in Model)
+                            {
+                                <tr class="order-row" data-order-id="@order.OrderId" style="cursor: pointer;">
+                                    <td class="text-center">
+                                        <i class="fas fa-chevron-right toggle-icon"></i>
+                                    </td>
+                                    <td><strong>#@order.OrderId</strong></td>
+                                    <td>@order.OrderDate?.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        <div>@order.User.FullName</div>
+                                        <small class="text-muted">@order.User.Email</small>
+                                    </td>
+                                    <td>@order.OrderItems.Sum(oi => oi.Quantity) sản phẩm</td>
+                                    <td><strong>@order.TotalPrice?.ToString("N0") đ</strong></td>
+                                    <td>
+                                        <small>@order.ShippingAddress</small>
+                                    </td>
+                                    <td>
+                                        @{
+                                            var badgeClass = order.Status switch
+                                            {
+                                                "Chờ xác nhận" => "bg-warning",
+                                                "Đang xử lý" => "bg-info",
+                                                "Đang giao" => "bg-primary",
+                                                "Đã giao" => "bg-success",
+                                                "Đã hủy" => "bg-danger",
+                                                _ => "bg-success"
+                                            };
+                                        }
+                                        <span class="badge @badgeClass">@order.Status</span>
+                                    </td>
+                                    @* <td onclick="event.stopPropagation();">
+                                        <a asp-action="Details" asp-route-id="@order.OrderId"
+                                           class="btn btn-sm btn-info" title="Chi tiết">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-danger"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal@(order.OrderId)"
+                                                title="Xóa">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td> *@
+                                </tr>
+
+                                <!-- Dòng chi tiết OrderItems (ẩn mặc định) -->
+                                <tr class="order-details" id="details-@order.OrderId" style="display: none;">
+                                    <td colspan="9">
+                                        <div class="order-items-container">
+                                            <h6 class="mb-3">
+                                                <i class="fas fa-box-open"></i> Chi tiết sản phẩm
+                                            </h6>
+                                            <div class="table-responsive">
+                                                <table class="table table-sm table-bordered">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th width="10%">Hình ảnh</th>
+                                                            <th>Tên sản phẩm</th>
+                                                            <th width="15%">Đơn giá</th>
+                                                            <th width="10%">Số lượng</th>
+                                                            <th width="15%">Thành tiền</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in order.OrderItems)
+                                                        {
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    @if (!string.IsNullOrEmpty(item.Product.ImageUrl))
+                                                                    {
+                                                                        <img src="@item.Product.ImageUrl"
+                                                                             alt="@item.Product.ProductName"
+                                                                             class="product-thumb">
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="no-image">
+                                                                            <i class="fas fa-image"></i>
+                                                                        </div>
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    <strong>@item.Product.ProductName</strong>
+                                                                    @if (!string.IsNullOrEmpty(item.Product.ProductDetail))
+                                                                    {
+                                                                        <br />
+                                                                        <small class="text-muted">@item.Product.ProductDetail</small>
+                                                                    }
+                                                                </td>
+                                                                <td class="text-end">@item.SalePrice.ToString("N0") đ</td>
+                                                                <td class="text-center">
+                                                                    <span class="badge bg-secondary">@item.Quantity</span>
+                                                                </td>
+                                                                <td class="text-end">
+                                                                    <strong class="text-primary">@((item.SalePrice * item.Quantity).ToString("N0")) đ</strong>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                    <tfoot class="table-light">
+                                                        <tr>
+                                                            <td colspan="4" class="text-end"><strong>Tổng cộng:</strong></td>
+                                                            <td class="text-end">
+                                                                <strong class="text-danger" style="font-size: 1.1rem">
+                                                                    @order.TotalPrice?.ToString("N0") đ
+                                                                </strong>
+                                                            </td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Modal xác nhận xóa -->
+                                @* <div class="modal fade" id="deleteModal@(order.OrderId)" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Xác nhận xóa</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Bạn có chắc chắn muốn xóa đơn hàng #@order.OrderId?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                <form asp-action="Delete" asp-route-id="@order.OrderId" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn btn-danger">Xóa</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> *@
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center">
+                                    <div class="py-5">
+                                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                        <p class="text-muted">Không có đơn hàng nào</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border: none;
+        border-radius: 8px;
+    }
+
+    .table thead th {
+        vertical-align: middle;
+        font-weight: 600;
+    }
+
+    .badge {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    /* Styles cho expandable rows */
+    .order-row:hover {
+        background-color: #f8f9fa;
+    }
+
+    .toggle-icon {
+        transition: transform 0.3s ease;
+        color: #6c757d;
+    }
+
+    .order-row.expanded .toggle-icon {
+        transform: rotate(90deg);
+        color: #0d6efd;
+    }
+
+    .order-details {
+        background-color: #f8f9fa;
+    }
+
+    .order-items-container {
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        margin: 10px;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .product-thumb {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .no-image {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f0f0f0;
+        border-radius: 5px;
+        color: #999;
+    }
+
+    /* Animation cho slide down */
+    .order-details td {
+        animation: slideDown 0.3s ease-out;
+    }
+
+    @* @keyframes slideDown {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    } *@
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lấy tất cả các dòng order
+        const orderRows = document.querySelectorAll('.order-row');
+
+        orderRows.forEach(row => {
+            row.addEventListener('click', function() {
+                const orderId = this.dataset.orderId;
+                const detailsRow = document.getElementById('details-' + orderId);
+                const toggleIcon = this.querySelector('.toggle-icon');
+
+                // Toggle hiển thị chi tiết
+                if (detailsRow.style.display === 'none') {
+                    detailsRow.style.display = 'table-row';
+                    this.classList.add('expanded');
+                } else {
+                    detailsRow.style.display = 'none';
+                    this.classList.remove('expanded');
+                }
+            });
+        });
+    });
+</script>
