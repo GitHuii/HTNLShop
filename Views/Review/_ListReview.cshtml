@@ -1,0 +1,29 @@
+﻿@model List<HTNLShop.ViewModels.ReviewVM>
+
+@if (Model.Count == 0)
+{
+    <p>Chưa có đánh giá nào.</p>
+}
+else
+{
+    foreach (var r in Model)
+    {
+        <div class="border-bottom mb-3 pb-3">
+            <strong>@r.UserName</strong> (@r.Email)<br />
+
+            <span>
+                @for (int i = 1; i <= r.Rate; i++)
+                {
+                    <span style="color:gold">★</span>
+                }
+                @for (int i = r.Rate + 1; i <= 5; i++)
+                {
+                    <span style="color:#ccc">★</span>
+                }
+            </span>
+
+            <p class="mt-2">@r.Content</p>
+            <small>@r.CreatedDate.ToString("dd/MM/yyyy HH:mm")</small>
+        </div>
+    }
+}

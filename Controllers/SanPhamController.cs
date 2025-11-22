@@ -1,4 +1,5 @@
 ﻿using HTNLShop.Data;
+using HTNLShop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -64,6 +65,20 @@ namespace HTNLShop.Controllers
         {
             var sanpham = db.Products.Include(p => p.Category).
                 SingleOrDefault(p => p.ProductId == id);
+            var reviews = db.Reviews
+            .Where(r => r.ProductId == id)
+            .Select(r => new ReviewVM
+            {
+                ReviewId = r.ReviewId,
+                ProductId = r.ProductId,
+                UserId = r.UserId,
+                UserName = r.User != null ? r.User.FullName : "Ẩn danh",
+                Email = r.User != null ? r.User.Email : "Ẩn danh",
+                Content = r.Content,
+                Rate = r.Rate,
+                CreatedDate = r.CreateDate
+            }).OrderByDescending(r => r.CreatedDate)
+            .ToList();
             if (sanpham == null)
             {
                 TempData["Message"] = $"Không tìm thấy sản phẩm với ID: {id}";
@@ -91,8 +106,11 @@ namespace HTNLShop.Controllers
                         ProductDetail = p.ProductDetail,
                         CategoryId = p.CategoryId,
                         CategoryName = p.Category.CategoryName
-                    }).ToList()
+                    }).ToList(),
+                    Reviews = reviews
             };
+            var rs = db.Reviews.Where(r => r.ProductId == id).ToList().Count();
+            ViewBag.quantity = rs;
             return View(res);
         }
     }
