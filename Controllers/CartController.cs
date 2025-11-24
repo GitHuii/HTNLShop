@@ -542,6 +542,8 @@ namespace HTNLShop.Controllers
             return View("CheckOut", model);
         }
 
+        
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> CheckOut(CheckoutVM model, int? BuyNowProductId, int quantity)

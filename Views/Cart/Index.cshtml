@@ -140,7 +140,6 @@
     </div>
     <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
-
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -224,7 +223,7 @@
                 });
             });
 
-            // Remove item
+
             $(document).on("click", ".remove-btn", function (e) {
                 e.preventDefault();
                 const id = $(this).data("id");
@@ -243,6 +242,7 @@
                     alert("Lỗi khi xóa sản phẩm. Vui lòng thử lại.");
                 });
             });
+
         });
     </script>
 }
