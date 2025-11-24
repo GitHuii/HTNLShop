@@ -121,7 +121,8 @@ namespace HTNLShop.Controllers
         // Action để xem chi tiết order
         public async Task<IActionResult> OrderDetail(int id)
         {
-            var userId = 1; // Thay bằng userId thực tế
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = int.Parse(userIdString);
 
             var order = await _context.Orders
                 .Include(o => o.OrderItems)
@@ -139,6 +140,7 @@ namespace HTNLShop.Controllers
                     ShippingAddress = o.ShippingAddress,
                     Items = o.OrderItems.Select(oi => new OrderItemVM
                     {
+                        ProductId = oi.ProductId,
                         ProductName = oi.Product.ProductName,
                         Image = oi.Product.ImageUrl,
                         Price = (decimal)oi.SalePrice,

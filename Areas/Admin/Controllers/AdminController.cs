@@ -1,7 +1,11 @@
 ﻿using HTNLShop.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using X.PagedList;
 using X.PagedList.Extensions;
 
@@ -10,6 +14,7 @@ namespace HTNLShop.Areas.Admin.Controllers
 
     [Area("admin")]
     [Route("/admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly HtlnshopContext db;
@@ -21,7 +26,7 @@ namespace HTNLShop.Areas.Admin.Controllers
 
         [Route("")]
         [Route("Index")]
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
             return View();
         }
@@ -196,6 +201,14 @@ namespace HTNLShop.Areas.Admin.Controllers
             var list = db.Users.OrderBy(p => p.UserId).ToPagedList();
 
             return View(list);
+        }
+        [Route("Logout")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Clear();
+            return Redirect("/Customer/Login");
         }
     }
 }

@@ -370,6 +370,72 @@
 
     });
 </script>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            function setIncreaseButtonState(id, qty, maxStock) {
+                var btn = $(".increase-btn[data-id='" + id + "']");
+                if (!btn.length) return;
+                if (maxStock && qty >= maxStock) {
+                    btn.prop("disabled", true).addClass("disabled");
+                } else {
+                    btn.prop("disabled", false).removeClass("disabled");
+                }
+            }
+
+            $(".increase-btn").click(function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                if (btn.prop("disabled")) return; // already disabled
+                const id = btn.data("id");
+                $.post("/Cart/IncreaseQuantity", { id: id }, function (res) {
+                    if (res.success) {
+                        $("#qty-" + id).val(res.quantity);
+                        $(".cart-total-" + id).text(Number(res.lineTotal || 0).toLocaleString());
+                        $("#subtotal").text(Number(res.total || 0).toLocaleString());
+                        setIncreaseButtonState(id, res.quantity, res.maxStock);
+                    } else {
+                        // nếu bị chặn vì vượt tồn kho -> disable nút + và show message
+                        if (res.maxStock) {
+                            setIncreaseButtonState(id, res.quantity || 0, res.maxStock);
+                            alert(res.message || "Không thể tăng thêm, đã đạt tồn kho tối đa.");
+                        } else {
+                            alert(res.message || "Cập nhật thất bại.");
+                        }
+                    }
+                });
+            });
+
+            $(".decrease-btn").click(function (e) {
+                e.preventDefault();
+                const id = $(this).data("id");
+                const row = $(this).closest("tr");
+                $.post("/Cart/DecreaseQuantity", { id: id }, function (res) {
+                    if (res.success) {
+                        if (res.quantity > 0) {
+                            $("#qty-" + id).val(res.quantity);
+                            $(".cart-total-" + id).text(Number(res.lineTotal || 0).toLocaleString());
+                            $("#subtotal").text(Number(res.total || 0).toLocaleString());
+                            // enable + nếu trước đó bị disabled
+                            setIncreaseButtonState(id, res.quantity, res.maxStock);
+                        } else {
+                            row.fadeOut(300, function () {
+                                $(this).remove();
+                                $("#subtotal").text(Number(res.total || 0).toLocaleString());
+                            });
+                        }
+                    } else {
+                        alert(res.message || "Cập nhật thất bại.");
+                    }
+                });
+            });
+
+            // Optional: on load, try to get current maxStock for each item by calling a lightweight endpoint
+            // (or render stock into data-stock attributes in server view so initial state can be set).
+        });
+    </script>
+}
 
 
 
