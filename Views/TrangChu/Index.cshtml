@@ -159,22 +159,26 @@
                                 @foreach (var item in Model.Laptops)
                                 {
                                     <div class="col-md-6 col-lg-4 col-xl-3">
-                                        <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
+                                        <div class="rounded position-relative fruite-item">
+                                            <div class="fruite-img">
+                                                <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId">
                                                     <img src="~/Assets/img/Products/@item.CategoryId/@(item.ProductId).jpg" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">@item.CategoryName</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>@item.ProductName</h4>
-                                                    <p>@item.ProductDetail</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">@String.Format("{0:N0} đ", item.Price)</p>
-                                                        <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.ProductId" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng</a>
-                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">@item.CategoryName</div>
+                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId">
+                                                    <h4 class="truncate-title">@item.ProductName</h4>
+                                                </a>
+                                                <p class="truncate-detail">@item.ProductDetail</p>
+                                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                                    <p class="text-dark fs-5 fw-bold mb-0">@String.Format("{0:N0} đ", item.Price)</p>
+                                                    <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.ProductId" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                        <i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng
+                                                    </a>
                                                 </div>
                                             </div>
-                                        </a>
+                                        </div>
                                     </div>
                                 }
                                 @*  <div class="col-md-6 col-lg-4 col-xl-3">
@@ -283,26 +287,28 @@
                             <div class="row g-4">
                                 @foreach (var item in Model.PCs)
                                 {
-
                                     <div class="col-md-6 col-lg-4 col-xl-3">
-                                        <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
+                                        <div class="rounded position-relative fruite-item">
+                                            <div class="fruite-img">
+                                                <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId">
                                                     <img src="~/Assets/img/Products/@item.CategoryId/@(item.ProductId).jpg" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">@item.CategoryName</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>@item.ProductName</h4>
-                                                    <p>@item.ProductDetail</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">@String.Format("{0:N0} đ", item.Price)</p>
-                                                        <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.ProductId" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng</a>
-                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">@item.CategoryName</div>
+                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId">
+                                                    <h4 class="truncate-title">@item.ProductName</h4>
+                                                </a>
+                                                <p class="truncate-detail">@item.ProductDetail</p>
+                                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                                    <p class="text-dark fs-5 fw-bold mb-0">@String.Format("{0:N0} đ", item.Price)</p>
+                                                    <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.ProductId" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                        <i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng
+                                                    </a>
                                                 </div>
                                             </div>
-                                        </a>
+                                        </div>
                                     </div>
-
                                 }
                                 @* <div class="col-md-6 col-lg-4 col-xl-3">
                                         <div class="rounded position-relative fruite-item">
@@ -332,22 +338,26 @@
                                 @foreach (var item in Model.Mices)
                                 {
                                     <div class="col-md-6 col-lg-4 col-xl-3">
-                                        <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
+                                        <div class="rounded position-relative fruite-item">
+                                            <div class="fruite-img">
+                                                <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId">
                                                     <img src="~/Assets/img/Products/@item.CategoryId/@(item.ProductId).jpg" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">@item.CategoryName</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>@item.ProductName</h4>
-                                                    <p>@item.ProductDetail</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">@String.Format("{0:N0} đ", item.Price)</p>
-                                                        <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.ProductId" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng</a>
-                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">@item.CategoryName</div>
+                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId">
+                                                    <h4 class="truncate-title">@item.ProductName</h4>
+                                                </a>
+                                                <p class="truncate-detail">@item.ProductDetail</p>
+                                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                                    <p class="text-dark fs-5 fw-bold mb-0">@String.Format("{0:N0} đ", item.Price)</p>
+                                                    <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.ProductId" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                        <i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng
+                                                    </a>
                                                 </div>
                                             </div>
-                                        </a>
+                                        </div>
                                     </div>
                                 }
                                 @*  <div class="col-md-6 col-lg-4 col-xl-3">
@@ -377,22 +387,26 @@
                                 @foreach (var item in Model.Keyboards)
                                 {
                                     <div class="col-md-6 col-lg-4 col-xl-3">
-                                        <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
+                                        <div class="rounded position-relative fruite-item">
+                                            <div class="fruite-img">
+                                                <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId">
                                                     <img src="~/Assets/img/Products/@item.CategoryId/@(item.ProductId).jpg" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">@item.CategoryName</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>@item.ProductName</h4>
-                                                    <p>@item.ProductDetail</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">@String.Format("{0:N0} đ", item.Price)</p>
-                                                        <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.ProductId" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng</a>
-                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">@item.CategoryName</div>
+                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId">
+                                                    <h4 class="truncate-title">@item.ProductName</h4>
+                                                </a>
+                                                <p class="truncate-detail">@item.ProductDetail</p>
+                                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                                    <p class="text-dark fs-5 fw-bold mb-0">@String.Format("{0:N0} đ", item.Price)</p>
+                                                    <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.ProductId" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                        <i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng
+                                                    </a>
                                                 </div>
                                             </div>
-                                        </a>
+                                        </div>
                                     </div>
                                 }
                                 @* <div class="col-md-6 col-lg-4 col-xl-3">
@@ -532,18 +546,24 @@
             {
                 <div class="border border-primary rounded position-relative vesitable-item">
                     <div class="vesitable-img">
-                        <a asp-action="Detail" asp-controller="SanPham" asp-route-id="@item.ProductId"><img src="~/Assets/img/Products/@item.CategoryId/@(item.ProductId).jpg" class="img-fluid w-100 rounded-top" alt=""></a>
-                </div>
-                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">@item.CategoryName</div>
-                <div class="p-4 rounded-bottom">
-                    <h4>@item.ProductName</h4>
-                    <p style="font-family: 'roboto', 'sans-serif' ">@item.ProductDetail</p>
-                    <div class="d-flex justify-content-between flex-lg-wrap">
-                        <p class="text-dark fs-5 fw-bold mb-0">@String.Format("{0:n0} đ", item.Price)</p>
-                        <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.ProductId" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng</a>
+                        <a asp-action="Detail" asp-controller="SanPham" asp-route-id="@item.ProductId">
+                            <img src="~/Assets/img/Products/@item.CategoryId/@(item.ProductId).jpg" class="img-fluid w-100 rounded-top" alt="">
+                        </a>
+                    </div>
+                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">@item.CategoryName</div>
+                    <div class="p-4 rounded-bottom">
+                        <a asp-action="Detail" asp-controller="SanPham" asp-route-id="@item.ProductId">
+                            <h4 class="truncate-title">@item.ProductName</h4>
+                        </a>
+                        <p class="truncate-detail" style="font-family: 'roboto', 'sans-serif'">@item.ProductDetail</p>
+                        <div class="d-flex justify-content-between flex-lg-wrap">
+                            <p class="text-dark fs-5 fw-bold mb-0">@String.Format("{0:n0} đ", item.Price)</p>
+                            <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.ProductId" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                <i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
             }
         </div>
         

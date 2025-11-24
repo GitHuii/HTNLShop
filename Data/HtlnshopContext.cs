@@ -165,6 +165,146 @@ public partial class HtlnshopContext : DbContext
             new User { UserId = 4, Username = "huy", Password = "123", FullName = "huy", Email = "huy@gmail.com", Address = "Ha Noi", RoleId = 2, PhoneNumber = "0123456789" }
             );
 
+        modelBuilder.Entity<Order>().HasData(
+                new Order
+                {
+                    OrderId = 1,
+                    OrderDate = new DateTime(2025,6,18),
+                    Status = "Đã giao",
+                    TotalPrice = 59980000, // 2 x iPhone 15 Pro Max
+                    ShippingAddress = "123 Nguyễn Huệ, Q1, TP.HCM",
+                    UserId = 1
+                },
+                new Order
+                {
+                    OrderId = 2,
+                    OrderDate = new DateTime(2025, 7, 19),
+                    Status = "Đã giao",
+                    TotalPrice = 26990000, // 1 x Samsung Galaxy S24 Ultra
+                    ShippingAddress = "123 Nguyễn Huệ, Q1, TP.HCM",
+                    UserId = 1
+                },
+                new Order
+                {
+                    OrderId = 3,
+                    OrderDate = new DateTime(2025, 8, 20),
+                    Status = "Đang giao",
+                    TotalPrice = 34990000, // 1 x MacBook Air M3
+                    ShippingAddress = "456 Lê Lợi, Q3, TP.HCM",
+                    UserId = 2
+                },
+                new Order
+                {
+                    OrderId = 4,
+                    OrderDate = new DateTime(2025, 9, 21),
+                    Status = "Đang xử lý",
+                    TotalPrice = 104961000, // 3 x iPhone (giảm 10%) + 2 x AirPods
+                    ShippingAddress = "789 Trần Hưng Đạo, Q5, TP.HCM",
+                    UserId = 1
+                },
+                new Order
+                {
+                    OrderId = 5,
+                    OrderDate = new DateTime(2025, 10, 22),
+                    Status = "Chờ xác nhận",
+                    TotalPrice = 32450000, // 5 x Samsung
+                    ShippingAddress = "321 Võ Văn Tần, Q3, TP.HCM",
+                    UserId = 2
+                },
+                new Order
+                {
+                    OrderId = 6,
+                    OrderDate = new DateTime(2025, 11, 23),
+                    Status = "Đã hủy",
+                    TotalPrice = 34990000, // 1 x MacBook
+                    ShippingAddress = "654 Hai Bà Trưng, Q1, TP.HCM",
+                    UserId = 2
+                },
+                new Order
+                {
+                    OrderId = 7,
+                    OrderDate = new DateTime(2025, 12, 18),
+                    Status = "Đang xử lý",
+                    TotalPrice = 52480000, // 1 x Dell + 1 x Sony
+                    ShippingAddress = "999 Lý Thường Kiệt, Q10, TP.HCM",
+                    UserId = 1
+                }
+            );
+
+        // Seed OrderItems
+        modelBuilder.Entity<OrderItem>().HasData(
+            // Order 1 - Đã giao
+            new OrderItem
+            {
+                OrderId = 1,
+                ProductId = 1, // iPhone 15 Pro Max
+                SalePrice = 29990000,
+                Quantity = 2
+            },
+            // Order 2 - Đã giao
+            new OrderItem
+            {
+                OrderId = 2,
+                ProductId = 2, // Samsung Galaxy S24 Ultra
+                SalePrice = 26990000,
+                Quantity = 1
+            },
+            // Order 3 - Đang giao
+            new OrderItem
+            {
+                OrderId = 3,
+                ProductId = 3, // MacBook Air M3
+                SalePrice = 34990000,
+                Quantity = 1
+            },
+            // Order 4 - Đang xử lý (nhiều sản phẩm)
+            new OrderItem
+            {
+                OrderId = 4,
+                ProductId = 1, // iPhone 15 Pro Max (giảm giá 10%)
+                SalePrice = 26991000,
+                Quantity = 3
+            },
+            new OrderItem
+            {
+                OrderId = 4,
+                ProductId = 5, // AirPods Pro 2
+                SalePrice = 6490000,
+                Quantity = 2
+            },
+            // Order 5 - Chờ xác nhận
+            new OrderItem
+            {
+                OrderId = 5,
+                ProductId = 2, // Samsung Galaxy S24 Ultra (giảm giá)
+                SalePrice = 6490000,
+                Quantity = 5
+            },
+            // Order 6 - Đã hủy
+            new OrderItem
+            {
+                OrderId = 6,
+                ProductId = 3, // MacBook Air M3
+                SalePrice = 34990000,
+                Quantity = 1
+            },
+            // Order 7 - Đang xử lý
+            new OrderItem
+            {
+                OrderId = 7,
+                ProductId = 4, // Dell XPS 15
+                SalePrice = 45990000,
+                Quantity = 1
+            },
+            new OrderItem
+            {
+                OrderId = 7,
+                ProductId = 6, // Sony WH-1000XM5
+                SalePrice = 8990000,
+                Quantity = 1
+            }
+        );
+
         modelBuilder.Entity<Category>().HasData(
             new Category { CategoryId = 1, CategoryName = "Laptop" },
             new Category { CategoryId = 2, CategoryName = "PC Gaming" },

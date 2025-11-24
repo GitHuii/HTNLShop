@@ -54,30 +54,25 @@
                 <div class="navbar-nav w-100">
                     @inject Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper<dynamic> HtmlHelper
 
-                    <a asp-area="Admin" asp-controller="Admin" asp-action="Index"
-                       class="nav-item nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                    <a asp-area="Admin" asp-controller="DashBoard" asp-action="Index"
+                       class="nav-item nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "DashBoard" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
                         <i class="fa fa-tachometer-alt me-2"></i>Dashboard
                     </a>
 
-                    <a asp-area="Admin" asp-controller="Admin" asp-action="QuanLySanPham"
-                       class="nav-item nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "QuanLySanPham" ? "active" : "")">
+                    <a asp-area="Admin" asp-controller="QuanLySanPham" asp-action="Index"
+                       class="nav-item nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "QuanLySanPham" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
                         <i class="fa fa-box me-2"></i>Sản Phẩm
                     </a>
 
-                    @* <a asp-area="Admin" asp-controller="Admin" asp-action="QuanLyDanhMuc"
-                       class="nav-item nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "QuanLyDanhMuc" ? "active" : "")">
-                        <i class="fa fa-tags me-2"></i>Danh Mục
-                    </a> *@
-
-                    <a asp-area ="Admin" asp-controller="Admin" asp-action="QuanLyNguoiDung"
-                       class="nav-item nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "QuanLyNguoiDung" ? "active" : "")">
+                    <a asp-area="Admin" asp-controller="QuanLyNguoiDung" asp-action="Index"
+                       class="nav-item nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "QuanLyNguoiDung" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
                         <i class="fa fa-users me-2"></i>Người Dùng
                     </a>
 
-                    @* <a asp-area="Admin" asp-controller="Admin" asp-action="QuanLyDonHang"
-                       class="nav-item nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "QuanLyDonHang" ? "active" : "")">
-                        <i class="fa fa-users me-2"></i>Quản Lý Đơn Hàng
-                    </a> *@
+                    <a asp-area="Admin" asp-controller="QuanLyDonHang" asp-action="Index"
+                       class="nav-item nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "QuanLyDonHang" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                        <i class="fa fa-tags me-2"></i>Đơn Hàng
+                    </a>
                 </div>
             </nav>
         </div>
@@ -113,7 +108,9 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                             @* <a href="#" class="dropdown-item">Hồ sơ</a> *@
+
                             <a asp-area="Admin" asp-controller="Admin" asp-action="Logout" class="dropdown-item">Đăng xuất</a>
+
                         </div>
                     </div>
                 </div>

@@ -298,49 +298,116 @@
 }
 
 .fruite .fruite-item {
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    transition: 0.5s;
 }
 .fruite .fruite-item:hover {
     box-shadow: 0 0 55px rgba(0, 0, 0, 0.4);
 }
 
-.fruite .fruite-item .fruite-img {
-    overflow: hidden;
-    transition: 0.5s;
-    border-radius: 10px 10px 0 0;
-}
+    .fruite .fruite-item .fruite-img {
+        height: 250px; /* Cố định chiều cao ảnh */
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+    }
 
-.fruite .fruite-item .fruite-img img {
-    transition: 0.5s;
-}
+        .fruite .fruite-item .fruite-img img {
+            transition: 0.5s;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Đảm bảo ảnh đầy khung mà không bị méo */
+        }
 
 .fruite .fruite-item .fruite-img img:hover {
     transform: scale(1.3);
 }
 /*** Fruits End ***/
 
+    .fruite .fruite-item > div:last-child {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
 
+    .fruite .fruite-item .truncate-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Giới hạn 2 dòng */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 3em; /* Đảm bảo chiều cao tối thiểu cho 2 dòng */
+        line-height: 1.5em;
+        margin-bottom: 0.5rem;
+    }
+    .fruite .fruite-item .truncate-detail {
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Giới hạn 3 dòng */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 4.5em; /* Đảm bảo chiều cao tối thiểu cho 3 dòng */
+        line-height: 1.5em;
+        margin-bottom: 1rem;
+        flex: 1;
+    }
 /*** vesitable Start ***/
 .vesitable .vesitable-item {
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    transition: 0.5s;
 }
 
 .vesitable .vesitable-item:hover {
     box-shadow: 0 0 55px rgba(0, 0, 0, 0.4);
 }
 
-.vesitable .vesitable-item .vesitable-img {
-    overflow: hidden;
-    transition: 0.5s;
-    border-radius: 10px 10px 0 0;
-}
+    .vesitable .vesitable-item .vesitable-img {
+        height: 250px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+    }
 
-.vesitable .vesitable-item .vesitable-img img {
-    transition: 0.5s;
-}
-
+        .vesitable .vesitable-item .vesitable-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    .vesitable .vesitable-item > div:last-child {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .vesitable .vesitable-item .d-flex {
+        margin-top: auto;
+    }
+    .vesitable .vesitable-item .truncate-detail {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 4.5em;
+        line-height: 1.5em;
+        margin-bottom: 1rem;
+        flex: 1;
+    }
+    .vesitable .vesitable-item .truncate-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 3em;
+        line-height: 1.5em;
+        margin-bottom: 0.5rem;
+    }
 .vesitable .vesitable-item .vesitable-img img:hover {
     transform: scale(1.2);
 }
@@ -494,4 +561,3 @@
     line-height: 35px;
 }
 /*** Footer End ***/
-

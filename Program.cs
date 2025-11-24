@@ -72,7 +72,7 @@ builder.Services.AddDbContext<HtlnshopContext>(options => {
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // T?ng lên 30 phút
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // T?ng lï¿½n 30 phï¿½t
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -130,7 +130,7 @@ app.Use(async (context, next) =>
         {
             var roleClaim = context.User.FindFirst(ClaimTypes.Role);
 
-            // N?u là Admin -> chuy?n h??ng v? trang admin
+            // N?u lï¿½ Admin -> chuy?n h??ng v? trang admin
             if (roleClaim?.Value == "Admin")
             {
                 context.Response.Redirect("/admin");

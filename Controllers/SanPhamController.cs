@@ -2,6 +2,7 @@
 using HTNLShop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList.Extensions;
 
 namespace HTNLShop.Controllers
 {
@@ -12,8 +13,11 @@ namespace HTNLShop.Controllers
         {
             db = context;
         }
-        public IActionResult Index(int? id)
+        public IActionResult Index(int? id , int? page)
         {
+            int pageSize = 9;
+            int pageNumber = page == null || page < 1 ? 1 : page.Value;
+
             var sanphams = db.Products.AsQueryable();
             if (id != null)
             {
@@ -29,7 +33,7 @@ namespace HTNLShop.Controllers
                 ProductDetail = p.ProductDetail,
                 CategoryId = p.CategoryId,
                 CategoryName = p.Category.CategoryName
-            }).ToList();
+            }).ToPagedList(pageNumber, pageSize);
 
             return View(list);
         }

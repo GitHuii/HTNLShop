@@ -406,19 +406,25 @@
         <h1 class="fw-bold mb-0">Sản Phẩm Cùng Danh Mục</h1>
         <div class="vesitable">
             <div class="owl-carousel vegetable-carousel justify-content-center">
-                @foreach(var item in Model.SameCategoryProduct)
+                @foreach (var item in Model.SameCategoryProduct)
                 {
                     <div class="border border-primary rounded position-relative vesitable-item">
                         <div class="vesitable-img">
-                            <img src="~/Assets/img/Products/@item.CategoryId/@(item.ProductId).jpg" class="img-fluid w-100 rounded-top" alt="">
+                            <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId">
+                                <img src="~/Assets/img/Products/@item.CategoryId/@(item.ProductId).jpg" class="img-fluid w-100 rounded-top" alt="">
+                            </a>
                         </div>
                         <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">@item.CategoryName</div>
                         <div class="p-4 pb-0 rounded-bottom">
-                            <h4>@item.ProductName</h4>
-                            <p>@item.ProductDetail</p>
+                            <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId">
+                                <h4 class="truncate-title">@item.ProductName</h4>
+                            </a>
+                            <p class="truncate-detail">@item.ProductDetail</p>
                             <div class="d-flex justify-content-between flex-lg-wrap">
-                                <p class="text-dark fs-5 fw-bold">@item.Price</p>
-                                <a href="#" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i>Xem Sản Phẩm</a>
+                                <p class="text-dark fs-5 fw-bold mb-0">@String.Format("{0:N0} đ", item.Price)</p>
+                                <a asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.ProductId" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary">
+                                    <i class="fa fa-shopping-bag me-2 text-primary"></i> Xem Sản Phẩm
+                                </a>
                             </div>
                         </div>
                     </div>
