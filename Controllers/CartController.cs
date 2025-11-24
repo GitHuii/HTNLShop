@@ -455,6 +455,47 @@ namespace HTNLShop.Controllers
             return View("CheckOut", model);
         }
 
+        [HttpPost]
+        public IActionResult RemoveCart(int productId)
+        {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (!int.TryParse(userIdStr, out int userId)) return Unauthorized();
+
+                var cartItem = _context.CartItems
+                    .Include(ci => ci.Cart)
+                    .Include(ci => ci.Product)
+                    .FirstOrDefault(ci => ci.ProductId == productId && ci.Cart.UserId == userId);
+
+                if (cartItem != null)
+                {
+                    _context.CartItems.Remove(cartItem);
+                    _context.SaveChanges();
+
+                    var total = _context.CartItems
+                        .Where(ci => ci.Cart.UserId == userId)
+                        .Sum(ci => ci.Quantity * ci.Product.Price);
+
+                    return Json(new { success = true, total });
+                }
+
+                return Json(new { success = false, message = "Không tìm thấy sản phẩm." });
+            }
+
+            // Xử lý cho Session
+            var cart = Cart;
+            var item = cart.FirstOrDefault(p => p.ProductId == productId);
+            if (item != null)
+            {
+                cart.Remove(item);
+                HttpContext.Session.Set(CART_KEY, cart);
+            }
+
+            var totalSession = cart.Sum(i => i.Price * i.Quantity);
+            return Json(new { success = true, total = totalSession });
+        }
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> CheckOut(CheckoutVM model, int? BuyNowProductId,int quantity)

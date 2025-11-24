@@ -236,8 +236,8 @@
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+
     $(function () {
         // helper: parse number from text like "1,234.56" or "1234"
         function parseNumber(txt) {
@@ -430,6 +430,31 @@
                     }
                 });
             });
+
+             $(document).on("click", ".remove-btn", function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            var $row = $(this).closest("tr");
+
+            $.ajax({
+                url: "/Cart/RemoveCart",
+                type: "POST",
+                data: { productId: id },
+                success: function (res) {
+                    if (!res) return;
+
+                    if (res.success) {
+                        $row.fadeOut(250, function () { $(this).remove(); });
+                        if (res.total !== undefined) updateCartTotalUI(res.total);
+                    } else {
+                        alert(res.message || "Xóa sản phẩm thất bại!");
+                    }
+                },
+                error: function () {
+                    alert("Lỗi khi xóa sản phẩm. Vui lòng thử lại.");
+                }
+            });
+        });
 
             // Optional: on load, try to get current maxStock for each item by calling a lightweight endpoint
             // (or render stock into data-stock attributes in server view so initial state can be set).
