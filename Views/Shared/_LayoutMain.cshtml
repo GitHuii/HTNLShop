@@ -57,7 +57,10 @@
                             <a asp-controller="TrangChu" asp-action="Index" class="nav-item nav-link active">Trang Chủ</a>  <!--href="index.html"-->
                             <a asp-controller="SanPham" asp-action="Index" class="nav-item nav-link">Sản Phẩm</a>
                             <a asp-controller="Cart" asp-action="Index" class="nav-item nav-link">Giỏ Hàng</a>
-                            <a asp-controller="Cart" asp-action="CheckOut" class="nav-item nav-link">Checkout</a>
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <a asp-controller="Cart" asp-action="CheckOut" class="nav-item nav-link">Đơn hàng</a>
+                            }
                             <a asp-controller="DanhGia" asp-action="DanhGia" class="nav-item nav-link">Đánh Giá</a> <!--href="testimonial.html"-->
                             <a asp-controller="LienHe" asp-action="LienHe" class="nav-item nav-link">Liên Hệ</a>
                             @if (!User.Identity.IsAuthenticated)
@@ -80,7 +83,7 @@
                                         <span class="ms-2">@User.Identity.Name</span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuLink">
-                                        <li><a class="dropdown-item" asp-controller="Order" asp-action="Index">My order</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Order" asp-action="Index">Lịch sử mua hàng</a></li>
                                         <li><a class="dropdown-item" asp-controller="Customer" asp-action="Logout">Đăng Xuất</a></li>
                                     </ul>
                                 </div>
@@ -95,33 +98,6 @@
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
                             }
-                            @* {
-                                var currentPath = Context.Request.Path.HasValue ? Context.Request.Path.Value : "/";
-                                var currentQuery = Context.Request.QueryString.HasValue ? Context.Request.QueryString.Value : "";
-                                var currentFull = (currentPath ?? "/") + (currentQuery ?? "");
-                                bool includeReturn = !string.IsNullOrWhiteSpace(currentPath)
-                                && currentPath != "/"
-                                && !currentPath.Equals(Url.Action("Login", "Customer"), StringComparison.OrdinalIgnoreCase)
-                                && !currentPath.StartsWith(Url.Action("Login", "Customer") + "?", StringComparison.OrdinalIgnoreCase);
-                            }
-                            ...
-                            @if (includeReturn)
-                            {
-                                <a asp-controller="Customer" asp-action="Login"
-                                   asp-route-returnurl="@(currentFull)"
-                                   class="my-auto d-flex align-items-center text-decoration-none">
-                                    <i class="fas fa-user fa-2x me-2"></i>
-                                    <span>Đăng nhập</span>
-                                </a>
-                            }
-                            else
-                            {
-                                <a asp-controller="Customer" asp-action="Login"
-                                   class="my-auto d-flex align-items-center text-decoration-none">
-                                    <i class="fas fa-user fa-2x me-2"></i>
-                                    <span>Đăng nhập</span>
-                                </a>
-                            } *@
                         </div>
                     </div>
                 </nav>

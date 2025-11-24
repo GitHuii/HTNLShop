@@ -64,60 +64,6 @@ namespace HTNLShop.Controllers
             return View(model);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Login(LoginVM model, string? ReturnUrl)
-        //{
-        //    ReturnUrl ??= Request.Form["ReturnUrl"].ToString();
-        //    ViewBag.ReturnUrl = ReturnUrl;
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        var customer = _context.Users
-        //            .Include(u => u.Role)
-        //            .FirstOrDefault(u =>
-        //            u.Username == model.Username &&
-        //            u.Password == model.Password);
-
-        //        if (customer != null)
-        //        {
-
-        //            var claims = new List<Claim>
-        //    {
-        //        new Claim(ClaimTypes.NameIdentifier, customer.UserId.ToString()),
-        //        new Claim("CustomerId", customer.UserId.ToString()), 
-        //        new Claim(ClaimTypes.Name, customer.FullName ?? ""),
-        //        new Claim(ClaimTypes.Email, customer.Email ?? ""),
-        //        new Claim(ClaimTypes.MobilePhone, customer.PhoneNumber ?? ""), 
-        //        new Claim(ClaimTypes.StreetAddress, customer.Address ?? ""),
-        //        new Claim(ClaimTypes.Role, "Customer")
-        //    };
-
-        //            var claimsIdentity = new ClaimsIdentity(
-        //                claims,
-        //                CookieAuthenticationDefaults.AuthenticationScheme
-        //            );
-
-        //            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-        //            await HttpContext.SignInAsync(
-        //                CookieAuthenticationDefaults.AuthenticationScheme,
-        //                claimsPrincipal
-        //            );
-
-        //            if (customer.Role.RoleId==2)
-        //                return RedirectToAction("Index", "Admin", new { area = "Admin" });
-
-        //            if (customer.Role.RoleId == 1)
-        //            {
-        //                await _cartController.MergeCartAsync(customer.UserId, HttpContext.Session);
-        //                return RedirectToAction("Index", "Cart");
-        //            }
-        //        }
-
-        //        ModelState.AddModelError(string.Empty, "Tên đăng nhập hoặc mật khẩu không đúng.");
-        //    }
-        //    return View(model);
-        //}
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM model, string? ReturnUrl)
         {
@@ -142,7 +88,7 @@ namespace HTNLShop.Controllers
                 new Claim(ClaimTypes.Email, customer.Email ?? ""),
                 new Claim(ClaimTypes.MobilePhone, customer.PhoneNumber ?? ""),
                 new Claim(ClaimTypes.StreetAddress, customer.Address ?? ""),
-                new Claim(ClaimTypes.Role, customer.Role.RoleId == 2 ? "Admin" : "Customer")
+                new Claim(ClaimTypes.Role, customer.Role.RoleId == 1 ? "Admin" : "Customer")
             };
 
                     var claimsIdentity = new ClaimsIdentity(
@@ -157,10 +103,10 @@ namespace HTNLShop.Controllers
                         claimsPrincipal
                     );
 
-                    if (customer.Role.RoleId == 2)
+                    if (customer.Role.RoleId == 1)
                         return RedirectToAction("Index", "Admin", new { area = "Admin" });
 
-                    if (customer.Role.RoleId == 1)
+                    if (customer.Role.RoleId == 2)
                     {
                         await _cartController.MergeCartAsync(customer.UserId, HttpContext.Session);
                         return RedirectToAction("Index", "Cart");
