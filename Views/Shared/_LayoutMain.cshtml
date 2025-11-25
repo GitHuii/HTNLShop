@@ -27,6 +27,83 @@
 
     <!-- Template Stylesheet -->
     <link href="~/css/style.css" rel="stylesheet">
+    <style>
+        .navbar-nav .nav-link {
+            position: relative;
+            color: #45595b;
+            font-weight: 500;
+            padding: 12px 20px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+            /* Underline effect */
+            .navbar-nav .nav-link::before {
+                content: '';
+                position: absolute;
+                bottom: 5px;
+                left: 50%;
+                width: 0;
+                height: 2px;
+                background: linear-gradient(90deg, #81c408, #5a8d06);
+                transform: translateX(-50%);
+                transition: width 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                border-radius: 2px;
+                opacity: 0;
+            }
+
+            /* Background effect */
+            .navbar-nav .nav-link::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(129, 196, 8, 0.08);
+                z-index: -1;
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                border-radius: 8px;
+            }
+
+            /* Hover state */
+            .navbar-nav .nav-link:hover {
+                color: #81c408;
+                transform: translateY(-3px);
+            }
+
+                .navbar-nav .nav-link:hover::before {
+                    width: 70%;
+                    opacity: 1;
+                }
+
+                .navbar-nav .nav-link:hover::after {
+                    transform: scaleX(1);
+                }
+
+            /* Active state */
+            .navbar-nav .nav-link.active {
+                color: #81c408;
+                font-weight: 600;
+            }
+
+                .navbar-nav .nav-link.active::before {
+                    width: 70%;
+                }
+
+                .navbar-nav .nav-link.active::after {
+                    transform: scaleX(1);
+                    background: rgba(129, 196, 8, 0.12);
+                }
+
+            /* Smooth transition khi không hover */
+            .navbar-nav .nav-link:not(:hover) {
+                transition: all 0.3s ease;
+            }
+    </style>
 	@RenderSection("Styles", required: false)
 </head>
 <body>
@@ -54,12 +131,10 @@
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a asp-controller="TrangChu" asp-action="Index" class="nav-item nav-link active">Trang Chủ</a>  <!--href="index.html"-->
-                            <a asp-controller="SanPham" asp-action="Index" class="nav-item nav-link">Sản Phẩm</a>
-                            <a asp-controller="Cart" asp-action="Index" class="nav-item nav-link">Giỏ Hàng</a>
-                            <a asp-controller="Cart" asp-action="CheckOut" class="nav-item nav-link">Checkout</a>
-                            <a asp-controller="DanhGia" asp-action="DanhGia" class="nav-item nav-link">Đánh Giá</a> <!--href="testimonial.html"-->
-                            <a asp-controller="LienHe" asp-action="LienHe" class="nav-item nav-link">Liên Hệ</a>
+                            <a asp-controller="TrangChu" asp-action="Index" class="nav-item nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "TrangChu" ? "active" : "")">Trang Chủ</a>
+                            <a asp-controller="SanPham" asp-action="Index" class="nav-item nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "SanPham" ? "active" : "")">Sản Phẩm</a>
+                            <a asp-controller="Cart" asp-action="Index" class="nav-item nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Cart" ? "active" : "")">Giỏ Hàng</a>
+                            <a asp-controller="LienHe" asp-action="LienHe" class="nav-item nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "LienHe" ? "active" : "")">Liên Hệ</a>
                             @if (!User.Identity.IsAuthenticated)
                             {
                                 <a asp-controller="Customer" asp-action="Register" class="nav-item nav-link">Đăng kí</a>
@@ -155,7 +230,6 @@
     </div>
 
 	@await Html.PartialAsync("_Footer")
-
 	<!-- Back to Top -->
     <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 

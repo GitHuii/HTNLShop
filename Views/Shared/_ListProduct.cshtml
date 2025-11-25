@@ -33,13 +33,29 @@
                     <div class="col-xl-3">
                         <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
                             <label for="fruits">Sắp Xếp Theo : </label>
-                            <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3" form="fruitform">
-                                <option value="volvo">Giá Tăng Dần</option>
-                                <option value="saab">Giá Giảm Dần</option>
+                            <form id="fruitform" method="get" asp-action="Index" asp-controller="SanPham">
+                                @if (ViewBag.CurrentCategory != null)
+                                {
+                                    <input type="hidden" name="id" value="@ViewBag.CurrentCategory" />
+                                }
+                            <select id="sort" name="sortOrder" class="border-0 form-select-sm bg-light me-3" onchange="this.form.submit()">
+                                   <option value="">Mặc định</option>
+                                   <option value="asc">Giá Tăng Dần</option>
+                                   <option value="desc">Giá Giảm Dần</option>
                             </select>
+                            </form>
                         </div>
                     </div>
                 </div>
+                <script>
+                    // Set selected option based on current sort
+                    var currentSort = '@ViewBag.CurrentSort';
+                    if (currentSort) {
+                        document.getElementById('sort').value = currentSort;
+                    }
+                </script>
+             
+
                 <div class="row g-4">
                     <div class="col-lg-3">
                         <div class="row g-4">
