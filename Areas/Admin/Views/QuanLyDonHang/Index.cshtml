@@ -199,12 +199,12 @@
                                                                         <small class="text-muted">@item.Product.ProductDetail</small>
                                                                     }
                                                                 </td>
-                                                                <td class="text-end">@item.SalePrice.ToString("N0") đ</td>
+                                                                <td class="text-end">@item.Product.Price.ToString("N0") đ</td>
                                                                 <td class="text-center">
                                                                     <span class="badge bg-secondary">@item.Quantity</span>
                                                                 </td>
                                                                 <td class="text-end">
-                                                                    <strong class="text-primary">@((item.SalePrice * item.Quantity).ToString("N0")) đ</strong>
+                                                                    <strong class="text-primary">@((item.Product.Price * item.Quantity).ToString("N0")) đ</strong>
                                                                 </td>
                                                             </tr>
                                                         }

@@ -55,7 +55,7 @@ namespace HTNLShop.Areas.Admin.Controllers
                         ProductId = g.Key,
                         ProductName = g.First().Product.ProductName,
                         TotalQuantity = g.Sum(oi => oi.Quantity),
-                        TotalRevenue = g.Sum(oi => oi.SalePrice * oi.Quantity)
+                        TotalRevenue = g.Sum(oi => g.First().Product.Price * oi.Quantity)
                     })
                     .OrderByDescending(p => p.TotalQuantity)
                     .Take(5)

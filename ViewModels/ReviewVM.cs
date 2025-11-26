@@ -10,6 +10,8 @@
         public string? Content { get; set; }
         public int Rate { get; set; }
 
+      //  public bool check { get; set; } = false;
+
         public string CreatedAtFormat => CreatedDate.ToString("dd/MM/yyyy");
         public DateTime CreatedDate { get; set; }
 

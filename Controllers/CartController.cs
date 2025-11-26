@@ -481,44 +481,6 @@ namespace HTNLShop.Controllers
             return View(model);
         }
 
-        //    [HttpGet]
-        //    [Authorize]
-        //    public IActionResult BuyNow(int productId, int quantity)
-        //    {
-
-        //        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //        if (!int.TryParse(userIdStr, out int CustormerId)) return Unauthorized();
-
-        //        var cart = _context.Carts
-        //                .Include(c => c.CartItems)
-        //                .ThenInclude(ci => ci.Product)
-        //                .FirstOrDefault(c => c.UserId == CustormerId);
-        //        if (cart == null)
-        //        {
-        //            return RedirectToAction("Index", "SanPham");
-        //        }
-
-
-        //        var item = cart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
-        //        if (item == null)
-        //        {
-        //            return RedirectToAction("Index", "Cart");
-        //        }
-        //        item.Quantity = quantity;
-        //        var model = new List<CartItems>
-        //{
-        //    new CartItems
-        //    {
-        //        ProductId = item.ProductId,
-        //        ProductName = item.Product.ProductName,
-        //        Price = item.Product.Price,
-        //        Quantity = item.Quantity,
-        //        Image = item.Product.ImageUrl
-        //    }
-        //};
-
-        //        return View("CheckOut", model);
-        //    }
 
         [HttpGet]
         [Authorize]
