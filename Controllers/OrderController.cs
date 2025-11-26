@@ -84,10 +84,9 @@ namespace HTNLShop.Controllers
                         : "",
                     Status = o.Status,
 
-                    // ✅ FIX: Ép kiểu rõ ràng
                     Total = o.TotalPrice > 0
                         ? Convert.ToDecimal(o.TotalPrice)
-                        : Convert.ToDecimal(o.OrderItems.Sum(oi => oi.Quantity * oi.SalePrice)),
+                        : Convert.ToDecimal(o.OrderItems.Sum(oi => oi.Quantity)),
 
                     ShippingAddress = o.ShippingAddress,
                     ProductName = o.OrderItems.FirstOrDefault() != null
@@ -97,7 +96,7 @@ namespace HTNLShop.Controllers
                         ? o.OrderItems.FirstOrDefault().Product.ImageUrl
                         : "/Assets/img/default-product.png",
                     Price = o.OrderItems.FirstOrDefault() != null
-                        ? Convert.ToDecimal(o.OrderItems.FirstOrDefault().SalePrice)
+                        ? Convert.ToDecimal(o.OrderItems.FirstOrDefault().Product.Price)
                         : 0,
                     Quantity = o.OrderItems.FirstOrDefault() != null
                         ? o.OrderItems.FirstOrDefault().Quantity
@@ -195,7 +194,7 @@ namespace HTNLShop.Controllers
                         ProductId = oi.ProductId,
                         ProductName = oi.Product.ProductName,
                         Image = oi.Product.ImageUrl,
-                        Price = (decimal)oi.SalePrice,
+                        Price = (decimal)oi.Product.Price,
                         Quantity = oi.Quantity
                     }).ToList()
                 })

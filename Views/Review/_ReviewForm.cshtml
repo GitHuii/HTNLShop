@@ -20,8 +20,9 @@
         <label>Đánh giá</label>
         <textarea name="Content" class="form-control" required></textarea>
     </div>
-
+       @if (User.Identity.IsAuthenticated){
     <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+       }
 </form>
 
 <script>

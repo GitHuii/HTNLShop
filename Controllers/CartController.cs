@@ -541,9 +541,7 @@ namespace HTNLShop.Controllers
 
             return View("CheckOut", model);
         }
-
-        
-
+     
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> CheckOut(CheckoutVM model, int? BuyNowProductId, int quantity)
@@ -660,7 +658,7 @@ namespace HTNLShop.Controllers
                         OrderId = order.OrderId,
                         ProductId = item.ProductId,
                         Quantity = item.Quantity,
-                        SalePrice = item.Product.Price
+                       // SalePrice = item.Product.Price
                     });
                 }
 

@@ -9,11 +9,11 @@
             <h1 class="mb-4">Thông Tin Hóa Đơn</h1>
             @* <form action="#"> *@
 
-            <form asp-action="CheckOut" asp-controller="Cart">
-                @if (Model.Count() == 1)
+        <form asp-action="CheckOut" asp-controller="Cart">
+                @* @if (Model.Count() == 1)
                 {
                     <input type="hidden" name="BuyNowProductId" value="@Model.First().ProductId" />
-                }
+                } *@
                 <div class="row g-5">
                     <div class="col-md-12 col-lg-6 col-xl-7">
                       
