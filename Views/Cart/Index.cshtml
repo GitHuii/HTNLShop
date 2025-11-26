@@ -139,7 +139,7 @@
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(function () {
+                $(function () {
             function parseNumber(txt) {
                 if (txt === null || txt === undefined) return 0;
                 var cleaned = String(txt).replace(/[^0-9\.\,]/g, '');
@@ -168,7 +168,7 @@
                 }
             }
 
-            // ✅ HÀM CẬP NHẬT ICON GIỎ HÀNG
+         
             function updateCartIconFromServer() {
                 $.ajax({
                     url: '@Url.Action("GetCartCount", "Cart")',
@@ -187,10 +187,7 @@
                             }
                         } else {
                             badge.remove();
-                            // Nếu giỏ hàng rỗng, reload trang
-                            setTimeout(function() {
-                                location.reload();
-                            }, 500);
+                            // ❌ BỎ RELOAD Ở ĐÂY - GÂY LOOP VÔ HẠN
                         }
                     },
                     error: function() {
@@ -198,6 +195,9 @@
                     }
                 });
             }
+
+            // ✅ THÊM BIẾN ĐỂ KIỂM TRA XEM CÓ ĐANG XÓA SẢN PHẨM KHÔNG
+            var isRemoving = false;
 
             // Increase quantity
             $(document).on("click", ".increase-btn", function (e) {
@@ -212,8 +212,6 @@
                         $(".cart-total-" + id).text(Number(res.lineTotal || 0).toLocaleString() + " đ");
                         updateCartTotalUI(res.total);
                         setIncreaseButtonState(id, res.quantity, res.maxStock);
-
-                        // ✅ CẬP NHẬT ICON
                         updateCartIconFromServer();
                     } else {
                         if (res.maxStock) {
@@ -239,17 +237,25 @@
                             $(".cart-total-" + id).text(Number(res.lineTotal || 0).toLocaleString() + " đ");
                             updateCartTotalUI(res.total);
                             setIncreaseButtonState(id, res.quantity, res.maxStock);
-
-                            // ✅ CẬP NHẬT ICON
                             updateCartIconFromServer();
                         } else {
+                            // ✅ ĐÁNH DẤU ĐANG XÓA
+                            isRemoving = true;
+
                             // Nếu quantity = 0, xóa dòng
                             row.fadeOut(300, function () {
                                 $(this).remove();
                                 updateCartTotalUI(res.total);
-
-                                // ✅ CẬP NHẬT ICON SAU KHI XÓA
                                 updateCartIconFromServer();
+
+                                // ✅ CHỈ RELOAD NẾU GIỎ HÀNG TRỐNG SAU KHI XÓA
+                                if ($('tbody tr').length === 0) {
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, 500);
+                                } else {
+                                    isRemoving = false;
+                                }
                             });
                         }
                     } else {
@@ -269,28 +275,41 @@
                 const id = $(this).data("id");
                 const row = $(this).closest("tr");
 
+                // ✅ ĐÁNH DẤU ĐANG XÓA
+                isRemoving = true;
+
                 $.post("/Cart/RemoveCart", { productId: id }, function (res) {
                     if (res.success) {
                         row.fadeOut(300, function () {
                             $(this).remove();
                             updateCartTotalUI(res.total);
-
-                            // ✅ CẬP NHẬT ICON SAU KHI XÓA
                             updateCartIconFromServer();
+
+                            // ✅ CHỈ RELOAD NẾU GIỎ HÀNG TRỐNG SAU KHI XÓA
+                            if ($('tbody tr').length === 0) {
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 500);
+                            } else {
+                                isRemoving = false;
+                            }
                         });
                     } else {
+                        isRemoving = false;
                         alert(res.message || "Xóa sản phẩm thất bại!");
                     }
                 }).fail(function() {
+                    isRemoving = false;
                     alert("Lỗi khi xóa sản phẩm. Vui lòng thử lại.");
                 });
             });
 
-            // ✅ CẬP NHẬT ICON KHI VỪA LOAD TRANG (Đảm bảo đồng bộ)
+            // ✅ CẬP NHẬT ICON KHI LOAD TRANG - NHƯNG KHÔNG RELOAD
             updateCartIconFromServer();
         });
     </script>
 }
+
 @* @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
