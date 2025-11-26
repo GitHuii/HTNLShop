@@ -19,6 +19,29 @@ namespace HTNLShop.Controllers
         {
             _context = context;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCartCount()
+        {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (int.TryParse(userIdStr, out int userId))
+                {
+                    var count = await _context.CartItems
+                        .Where(ci => ci.Cart.UserId == userId)
+                        .SumAsync(ci => ci.Quantity);
+                    return Json(count);
+                }
+            }
+            else
+            {
+                var cart = HttpContext.Session.Get<List<CartItems>>(CART_KEY);
+                return Json(cart?.Sum(i => i.Quantity) ?? 0);
+            }
+
+            return Json(0);
+        }
         public List<CartItems> Cart => HttpContext.Session.Get<List<CartItems>>(CART_KEY) ?? new List<CartItems>();
         public IActionResult Index()
         {

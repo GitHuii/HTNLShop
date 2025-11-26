@@ -136,8 +136,162 @@
         </div>
     </div>
     <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
-
 @section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            function parseNumber(txt) {
+                if (txt === null || txt === undefined) return 0;
+                var cleaned = String(txt).replace(/[^0-9\.\,]/g, '');
+                if (cleaned.indexOf(',') > -1 && cleaned.indexOf('.') > -1) {
+                    cleaned = cleaned.replace(/,/g, '');
+                } else if (cleaned.indexOf(',') > -1 && cleaned.indexOf('.') === -1) {
+                    cleaned = cleaned.replace(/,/g, '.');
+                }
+                var n = parseFloat(cleaned);
+                return isNaN(n) ? 0 : n;
+            }
+
+            function updateCartTotalUI(total) {
+                var formatted = (total || 0).toLocaleString();
+                $(".cart-Subtotal").text(formatted + " đ");
+                $("p.mb-0.pe-4").text(formatted + " đ");
+            }
+
+            function setIncreaseButtonState(id, qty, maxStock) {
+                var btn = $(".increase-btn[data-id='" + id + "']");
+                if (!btn.length) return;
+                if (maxStock && qty >= maxStock) {
+                    btn.prop("disabled", true).addClass("disabled");
+                } else {
+                    btn.prop("disabled", false).removeClass("disabled");
+                }
+            }
+
+            // ✅ HÀM CẬP NHẬT ICON GIỎ HÀNG
+            function updateCartIconFromServer() {
+                $.ajax({
+                    url: '@Url.Action("GetCartCount", "Cart")',
+                    type: 'GET',
+                    success: function (count) {
+                        var badge = $('.fa-shopping-bag').next('span');
+                        if (count > 0) {
+                            if (badge.length === 0) {
+                                $('.fa-shopping-bag').after(
+                                    '<span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">' +
+                                    count +
+                                    '</span>'
+                                );
+                            } else {
+                                badge.text(count);
+                            }
+                        } else {
+                            badge.remove();
+                            // Nếu giỏ hàng rỗng, reload trang
+                            setTimeout(function() {
+                                location.reload();
+                            }, 500);
+                        }
+                    },
+                    error: function() {
+                        console.log('Không thể cập nhật số lượng giỏ hàng');
+                    }
+                });
+            }
+
+            // Increase quantity
+            $(document).on("click", ".increase-btn", function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                if (btn.prop("disabled")) return;
+                const id = btn.data("id");
+
+                $.post("/Cart/IncreaseQuantity", { id: id }, function (res) {
+                    if (res.success) {
+                        $("#qty-" + id).val(res.quantity);
+                        $(".cart-total-" + id).text(Number(res.lineTotal || 0).toLocaleString() + " đ");
+                        updateCartTotalUI(res.total);
+                        setIncreaseButtonState(id, res.quantity, res.maxStock);
+
+                        // ✅ CẬP NHẬT ICON
+                        updateCartIconFromServer();
+                    } else {
+                        if (res.maxStock) {
+                            setIncreaseButtonState(id, res.quantity || 0, res.maxStock);
+                        }
+                        alert(res.message || "Không thể tăng thêm.");
+                    }
+                }).fail(function() {
+                    alert("Lỗi khi tăng số lượng. Vui lòng thử lại.");
+                });
+            });
+
+            // Decrease quantity
+            $(document).on("click", ".decrease-btn", function (e) {
+                e.preventDefault();
+                const id = $(this).data("id");
+                const row = $(this).closest("tr");
+
+                $.post("/Cart/DecreaseQuantity", { id: id }, function (res) {
+                    if (res.success) {
+                        if (res.quantity > 0) {
+                            $("#qty-" + id).val(res.quantity);
+                            $(".cart-total-" + id).text(Number(res.lineTotal || 0).toLocaleString() + " đ");
+                            updateCartTotalUI(res.total);
+                            setIncreaseButtonState(id, res.quantity, res.maxStock);
+
+                            // ✅ CẬP NHẬT ICON
+                            updateCartIconFromServer();
+                        } else {
+                            // Nếu quantity = 0, xóa dòng
+                            row.fadeOut(300, function () {
+                                $(this).remove();
+                                updateCartTotalUI(res.total);
+
+                                // ✅ CẬP NHẬT ICON SAU KHI XÓA
+                                updateCartIconFromServer();
+                            });
+                        }
+                    } else {
+                        alert(res.message || "Cập nhật thất bại.");
+                    }
+                }).fail(function() {
+                    alert("Lỗi khi giảm số lượng. Vui lòng thử lại.");
+                });
+            });
+
+            // Remove item
+            $(document).on("click", ".remove-btn", function (e) {
+                e.preventDefault();
+
+                if (!confirm('Bạn có chắc muốn xóa sản phẩm này?')) return;
+
+                const id = $(this).data("id");
+                const row = $(this).closest("tr");
+
+                $.post("/Cart/RemoveCart", { productId: id }, function (res) {
+                    if (res.success) {
+                        row.fadeOut(300, function () {
+                            $(this).remove();
+                            updateCartTotalUI(res.total);
+
+                            // ✅ CẬP NHẬT ICON SAU KHI XÓA
+                            updateCartIconFromServer();
+                        });
+                    } else {
+                        alert(res.message || "Xóa sản phẩm thất bại!");
+                    }
+                }).fail(function() {
+                    alert("Lỗi khi xóa sản phẩm. Vui lòng thử lại.");
+                });
+            });
+
+            // ✅ CẬP NHẬT ICON KHI VỪA LOAD TRANG (Đảm bảo đồng bộ)
+            updateCartIconFromServer();
+        });
+    </script>
+}
+@* @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(function () {
@@ -242,5 +396,5 @@
 
         });
     </script>
-}
+} *@
 }
