@@ -92,7 +92,10 @@ namespace HTNLShop.Areas.Admin.Controllers
                     .Where(o => o.OrderDate.HasValue
                         && o.OrderDate.Value.Year == targetMonth.Year
                         && o.OrderDate.Value.Month == targetMonth.Month
-                        && (o.Status == "Completed" || o.Status == "Đã giao"))
+                        && (o.Status == "Completed"
+                            || o.Status == "Đã giao"
+                            || o.Status.ToLower().Contains("giao")
+                            || o.Status.ToLower().Contains("hoàn thành")))
                     .SumAsync(o => o.TotalPrice ?? 0);
 
                 monthlyData.Add(new MonthlyDataViewModel
@@ -128,6 +131,36 @@ namespace HTNLShop.Areas.Admin.Controllers
 
             return monthlyData;
         }
+
+        public async Task<IActionResult> LowStockProducts()
+        {
+            var lowStockProducts = await _context.Products
+                .Include(p => p.Category)
+                .Where(p => p.StockQuantity < 10)
+                .OrderBy(p => p.StockQuantity)
+                .Select(p => new LowStockProductViewModel
+                {
+                    ProductId = p.ProductId,
+                    ProductName = p.ProductName,
+                    CategoryName = p.Category.CategoryName,
+                    StockQuantity = p.StockQuantity,
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl
+                })
+                .ToListAsync();
+
+            return View(lowStockProducts);
+        }
+    }
+
+    public class LowStockProductViewModel
+    {
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public string CategoryName { get; set; }
+        public int StockQuantity { get; set; }
+        public double? Price { get; set; }
+        public string ImageUrl { get; set; }
     }
     public class DashboardViewModel
     {

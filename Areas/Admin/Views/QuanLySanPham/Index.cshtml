@@ -13,6 +13,48 @@
     <a asp-controller="QuanLySanPham" asp-action="AddProduct" class="btn btn-success m-2">Thêm Sản Phẩm</a>
 </p>
 
+<!-- Form lọc và tìm kiếm -->
+<div class="card mb-3">
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="row g-3">
+            <div class="col-md-4">
+                <label for="categoryId" class="form-label">Danh Mục</label>
+                <select name="categoryId" id="categoryId" class="form-select">
+                    <option value="">-- Tất cả danh mục --</option>
+                    @if (ViewBag.Categories != null)
+                    {
+                        @foreach (SelectListItem item in ViewBag.Categories)
+                        {
+                            <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+            
+            <div class="col-md-6">
+                <label for="searchName" class="form-label">Tên Sản Phẩm</label>
+                <input type="text" 
+                       name="searchName" 
+                       id="searchName" 
+                       class="form-control" 
+                       placeholder="Nhập tên sản phẩm..." 
+                       value="@ViewBag.CurrentSearch" />
+            </div>
+            
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
+            </div>
+        </form>
+        
+        @if (ViewBag.CurrentCategory != null || !string.IsNullOrEmpty(ViewBag.CurrentSearch as string))
+        {
+            <div class="mt-3">
+                <a asp-action="Index" class="btn btn-secondary btn-sm">Xóa bộ lọc</a>
+            </div>
+        }
+    </div>
+</div>
+
 <div class="table-responsive">
     <table class="table text-start align-middle table-bordered table-hover mb-0" style="table-layout: fixed; width: 100%;">
         <thead>
@@ -27,22 +69,43 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Price.ToString("N0") ₫</td>
+                        <td>@item.ProductDetail</td>
+                        <td>@item.StockQuantity</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="@item.ImageUrl" alt="@item.ProductName" width="60" />
+                            }
+                        </td>
+                        <td>@item.Category?.CategoryName</td>
+                        <td style="white-space: nowrap;">
+                            <a asp-action="EditProduct" 
+                               asp-route-id="@item.ProductId" 
+                               class="btn btn-warning btn-sm">Sửa</a>
+                            
+                            <form asp-action="DeleteProduct" 
+                                  method="post" 
+                                  onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');" 
+                                  style="display:inline;">
+                                <input type="hidden" name="id" value="@item.ProductId" />
+                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
             {
                 <tr>
-                    <td>@item.ProductName</td>
-                    <td>@item.Price.ToString("N0") ₫</td>
-                    <td>@item.ProductDetail</td>
-                    <td>@item.StockQuantity</td>
-                    <td><img src="@item.ImageUrl" alt="" width="60" /></td>
-                    <td>@item.Category?.CategoryName</td>
-                    <td style="white-space: nowrap;">
-                        <a asp-action="EditProduct" asp-route-id="@item.ProductId" class="btn btn-warning m-2">Sửa</a> |
-
-                        <form asp-action="DeleteProduct" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');" style="display:inline;">
-                            <input type="hidden" name="id" value="@item.ProductId" />
-                            <button type="submit" class="btn btn-danger m-2">Xóa</button>
-                        </form>
+                    <td colspan="7" class="text-center text-muted py-4">
+                        Không tìm thấy sản phẩm nào
                     </td>
                 </tr>
             }
@@ -50,18 +113,25 @@
     </table>
 </div>
 
-<div class="d-flex justify-content-center mt-3">
-    @Html.PagedListPager(
-    Model,
-    page => Url.Action("Index", "QuanLySanPham", new { page }),
-        new PagedListRenderOptions
-        {
-            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-            DisplayLinkToLastPage = PagedListDisplayMode.Always,
-            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-            DisplayLinkToNextPage = PagedListDisplayMode.Always,
-            DisplayEllipsesWhenNotShowingAllPageNumbers = true,
-            LiElementClasses = new[] { "page-item" },
-            PageClasses = new[] { "page-link" }
-        })
-</div>
+@if (Model != null && Model.PageCount > 1)
+{
+    <div class="d-flex justify-content-center mt-3">
+        @Html.PagedListPager(
+            Model,
+            page => Url.Action("Index", "QuanLySanPham", new { 
+                page = page, 
+                categoryId = ViewBag.CurrentCategory, 
+                searchName = ViewBag.CurrentSearch 
+            }),
+            new PagedListRenderOptions
+            {
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" }
+            })
+    </div>
+}

@@ -19,16 +19,30 @@ namespace HTNLShop.Areas.Admin.Controllers
             db = context;
         }
 
-        public IActionResult Index(int? page)
+        public IActionResult Index(int? page, int? categoryId, string searchName)
         {
             int pageSize = 10;
             int pageNumber = page == null || page < 1 ? 1 : page.Value;
 
-            var list = db.Products
-                         .Include(p => p.Category)
-                         .AsNoTracking()
-                         .OrderBy(p => p.ProductId)
-                         .ToPagedList(pageNumber, pageSize);
+            var products = db.Products
+                             .Include(p => p.Category)
+                             .AsNoTracking()
+                             .AsQueryable();
+            if (categoryId.HasValue && categoryId.Value > 0)
+            {
+                products = products.Where(p => p.CategoryId == categoryId.Value);
+            }
+
+            if (!string.IsNullOrEmpty(searchName))
+            {
+                products = products.Where(p => p.ProductName.Contains(searchName));
+            }
+
+            var list = products.OrderBy(p => p.ProductId).ToPagedList(pageNumber, pageSize);
+
+            ViewBag.Categories = new SelectList(db.Categories.ToList(), "CategoryId", "CategoryName", categoryId);
+            ViewBag.CurrentCategory = categoryId;
+            ViewBag.CurrentSearch = searchName;
 
             return View(list);
         }

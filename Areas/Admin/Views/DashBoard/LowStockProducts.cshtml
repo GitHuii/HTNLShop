@@ -1,0 +1,140 @@
+﻿@model List<HTNLShop.Areas.Admin.Controllers.LowStockProductViewModel>
+
+@{
+    ViewData["Title"] = "Sản Phẩm Sắp Hết Hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="text-danger">
+                        <i class="fas fa-exclamation-triangle"></i> 
+                        Sản Phẩm Sắp Hết Hàng
+                    </h2>
+                    <p class="text-muted mb-0">
+                        Danh sách các sản phẩm có số lượng tồn kho < 10
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-box"></i> 
+                    Tổng số: <strong>@Model.Count()</strong> sản phẩm cần nhập thêm
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="80">Hình ảnh</th>
+                                <th>Tên Sản Phẩm</th>
+                                <th>Danh Mục</th>
+                                <th width="120" class="text-center">Tồn Kho</th>
+                                <th width="150" class="text-end">Giá</th>
+                                <th width="100" class="text-center">Trạng Thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="@item.ImageUrl" alt="@item.ProductName" 
+                                             class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <strong>@item.ProductName</strong>
+                                        <br>
+                                        <small class="text-muted">#@item.ProductId</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info">@item.CategoryName</span>
+                                    </td>
+                                    <td class="text-center">
+                                        @if (item.StockQuantity == 0)
+                                        {
+                                            <span class="badge bg-dark fs-6">
+                                                <i class="fas fa-times-circle"></i> Hết hàng
+                                            </span>
+                                        }
+                                        else if (item.StockQuantity < 5)
+                                        {
+                                            <span class="badge bg-danger fs-6">
+                                                <i class="fas fa-exclamation-triangle"></i> @item.StockQuantity
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning fs-6">
+                                                <i class="fas fa-box"></i> @item.StockQuantity
+                                            </span>
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        <strong class="text-primary">@item.Price?.ToString("N0") VNĐ</strong>
+                                    </td>
+                                    <td class="text-center">
+                                        @if (item.StockQuantity == 0)
+                                        {
+                                            <span class="badge bg-dark">Cần nhập ngay</span>
+                                        }
+                                        else if (item.StockQuantity < 5)
+                                        {
+                                            <span class="badge bg-danger">Rất ít</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning">Còn ít</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="alert alert-warning">
+                    <i class="fas fa-lightbulb"></i> 
+                    <strong>Lưu ý:</strong> Các sản phẩm trên cần được nhập thêm hàng để tránh tình trạng hết hàng.
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">
+                <i class="fas fa-check-circle"></i> Tuyệt vời!
+            </h4>
+            <p class="mb-0">Tất cả sản phẩm đều còn đủ hàng trong kho (≥ 10 sản phẩm).</p>
+        </div>
+    }
+</div>
+
+<style>
+    .table tbody tr {
+        transition: background-color 0.2s ease;
+    }
+    
+    .table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .img-thumbnail {
+        border-radius: 8px;
+    }
+</style>

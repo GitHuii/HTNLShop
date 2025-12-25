@@ -55,7 +55,7 @@
             <div class="bg-light rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-2">
                     <h6 class="mb-0">Đơn Hàng Chờ Xử Lý</h6>
-                    <a asp-controller="QuanLyDonHang" asp-action="Index" class="btn btn-sm btn-primary">Xem Chi Tiết</a>
+                    <a asp-action="LowStockProducts" class="btn btn-primary">Xem Chi Tiết</a>
                 </div>
                 <div class="d-flex align-items-center">
                     <span class="fs-1 fw-bold text-warning">@Model.PendingOrders</span>
@@ -67,7 +67,7 @@
             <div class="bg-light rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-2">
                     <h6 class="mb-0">Sản Phẩm Sắp Hết Hàng</h6>
-                    <a asp-controller="Admin" asp-action="QuanLySanPham" class="btn btn-sm btn-primary">Xem Chi Tiết</a>
+                    <a asp-action="LowStockProducts" class="btn btn-primary">Xem Chi Tiết</a>
                 </div>
                 <div class="d-flex align-items-center">
                     <span class="fs-1 fw-bold text-danger">@Model.LowStockProducts</span>
